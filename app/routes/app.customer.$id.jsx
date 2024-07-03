@@ -1002,16 +1002,14 @@ export default function UserPage(){
                                                         
                                                         <div className="">
                                                             <p>
-                                                                <b>Best before:</b>
+                                                                <b>Best before:</b> {`${day}.${month}.${year}` }
                                                             </p>
-                                                            <p>
+                                                            {/* <p>
                                                                 {`${day}.${month}.${year}` }
-                                                            </p>
+                                                            </p> */}
+                                                            <br />
                                                             <p>
-                                                                <b>Recipe ID</b>
-                                                            </p>
-                                                            <p>
-                                                                {customer?.id}
+                                                                <b>Recipe ID:</b> {customer?.id}
                                                             </p>
                                                         </div>
 
