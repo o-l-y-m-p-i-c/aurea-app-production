@@ -976,7 +976,7 @@ export default function UserPage(){
                                                                 </div>
                                                                 <div className="image_prev_col">
                                                                     {/* {nrv  > 1 && '>' } */}
-                                                                    {nrv * 100} % 
+                                                                    {nrv * 100}% 
                                                                 </div>
                                                             </div>
                                                         })}
@@ -1028,9 +1028,9 @@ export default function UserPage(){
                                                     </div>
                                                 </div>
                                                 <div className="image_prev_grid_col">
+                                                    *NRV means Nutrient Reference Value 
+                                                    <br />
                                                     <b>
-                                                        NRV means Nutrient Reference Value 
-                                                        <br />
                                                         30 capsules
                                                     </b>
                                                 </div>
