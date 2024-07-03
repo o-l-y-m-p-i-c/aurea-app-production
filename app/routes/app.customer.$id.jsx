@@ -1022,6 +1022,19 @@ export default function UserPage(){
                                                                 <b>Recipe ID:</b> {param.id}
                                                             </p>
                                                         </div>
+                                                        <p>
+                                                            <b> 
+                                                            {/* {customer.addresses[0]} */}
+                                                            bloonce UG 
+                                                            <br />
+                                                            Kapellenstr. 5053332 Bornheim, Germany
+                                                            </b>
+                                                            <br />
+                                                            <br />
+                                                            <b>
+                                                                Made in Germany
+                                                            </b>
+                                                        </p>
 
                                                        
                                                         
@@ -1035,17 +1048,7 @@ export default function UserPage(){
                                                     </b>
                                                 </div>
                                                 <div className="image_prev_grid_col">
-                                                        <b> 
-                                                        {/* {customer.addresses[0]} */}
-                                                        bloonce UG 
-                                                        <br />
-                                                        Kapellenstr. 5053332 Bornheim, Germany
-                                                        </b>
-                                                        <br />
-                                                        <br />
-                                                        <b>
-                                                            Made in Germany
-                                                        </b>
+                                                        
                                                 </div>
                                             </div>
 
