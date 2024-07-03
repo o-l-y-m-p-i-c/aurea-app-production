@@ -380,7 +380,7 @@ export default function UserPage(){
         {
             id:'',
             title: 'Calcium Carbonate',
-            ingredientName:"Calciumcarbonate",
+            ingredientName:"Calcium Carbonate",
             key:"calcium_carbonate",
             btns: recepiesBtns,
             chosenVariant:'-',
@@ -395,7 +395,7 @@ export default function UserPage(){
             id:'',
             title: 'Iron Bisglycinate',
             key:"iron_bisglycinate",
-            ingredientName:"Ironbisglycinate",
+            ingredientName:"Iron Bisglycinate",
             btns: recepiesBtns,
             chosenVariant:'-',
             namespace:"default",
@@ -409,7 +409,7 @@ export default function UserPage(){
             id:'',
             title: 'Magnesium Bisglycinate',
             key:"magnesium_bisglycinate",
-            ingredientName:"Ironbisglycinate",
+            ingredientName:"Magnesium Bisglycinate",
             btns: recepiesBtns,
             chosenVariant:'-',
             namespace:"default",
@@ -437,7 +437,7 @@ export default function UserPage(){
             id:'',
             title: 'Zinc Bisglycinate',
             key:"zinc_bisglycinate",
-            ingredientName:"Zincbisglycinate",
+            ingredientName:"Zinc Bisglycinate",
             btns: recepiesBtns,
             chosenVariant:'-',
             namespace:"default",
@@ -942,7 +942,7 @@ export default function UserPage(){
                                                             }
                                                             return true
                                                         }).map(recepie => {
-                                                            return recepie.title
+                                                            return recepie.ingredientName
                                                         }).toString().replaceAll(',', ", ")}
                                                         , Hydroxypropylmethylcellulose (HPMC-Capsule), Maltodextrin
                                                         {/* {textareaValue} */}
