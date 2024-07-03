@@ -314,6 +314,7 @@ export default function UserPage(){
             btns: recepiesBtns,
             chosenVariant:'-',
             namespace:"default",
+            ingredientName:"Vitamin B6",
             nrv: 1.4,
             min : 1.4,
             med: 1.6,
@@ -327,6 +328,7 @@ export default function UserPage(){
             btns: recepiesBtns,
             chosenVariant:'-',
             namespace:"default",
+            ingredientName:"Vitamin B9",
             nrv: 200,
             min : 100,
             med: 200,
@@ -337,6 +339,7 @@ export default function UserPage(){
             id:'',
             title: 'B12 Methylcobalamine',
             key:"b12_methylcobalamine",
+            ingredientName:"Vitamin B12",
             btns: recepiesBtns,
             chosenVariant:'-',
             namespace:"default",
@@ -349,6 +352,7 @@ export default function UserPage(){
         {
             id:'',
             title: 'Vitamin C Ascorbic Acid',
+            ingredientName:"Vitamin C",
             key:"vitamin_c_ascorbic_acid",
             btns: recepiesBtns,
             chosenVariant:'-',
@@ -363,6 +367,7 @@ export default function UserPage(){
             id:'',
             title: 'Vitamin D3 Cholecalciferol',
             key:"vitamin_d3_cholecalciferol",
+            ingredientName:"Vitamin D",
             btns: recepiesBtns,
             chosenVariant:'-',
             namespace:"default",
@@ -375,6 +380,7 @@ export default function UserPage(){
         {
             id:'',
             title: 'Calcium Carbonate',
+            ingredientName:"Calciumcarbonate",
             key:"calcium_carbonate",
             btns: recepiesBtns,
             chosenVariant:'-',
@@ -389,6 +395,7 @@ export default function UserPage(){
             id:'',
             title: 'Iron Bisglycinate',
             key:"iron_bisglycinate",
+            ingredientName:"Ironbisglycinate",
             btns: recepiesBtns,
             chosenVariant:'-',
             namespace:"default",
@@ -402,6 +409,7 @@ export default function UserPage(){
             id:'',
             title: 'Magnesium Bisglycinate',
             key:"magnesium_bisglycinate",
+            ingredientName:"Ironbisglycinate",
             btns: recepiesBtns,
             chosenVariant:'-',
             namespace:"default",
@@ -415,6 +423,7 @@ export default function UserPage(){
             id:'',
             title: 'Selenomethionine',
             key:"selenomethionine",
+            ingredientName:"Selenmethionine",
             btns: recepiesBtns,
             chosenVariant:'-',
             namespace:"default",
@@ -428,6 +437,7 @@ export default function UserPage(){
             id:'',
             title: 'Zinc Bisglycinate',
             key:"zinc_bisglycinate",
+            ingredientName:"Zincbisglycinate",
             btns: recepiesBtns,
             chosenVariant:'-',
             namespace:"default",
@@ -933,7 +943,7 @@ export default function UserPage(){
                                                             return true
                                                         }).map(recepie => {
                                                             return recepie.title
-                                                        }).toString()}
+                                                        }).toString().replaceAll(',', ", ")}
                                                         , Hydroxypropylmethylcellulose (HPMC-Capsule), Maltodextrin
                                                         {/* {textareaValue} */}
                                                     </p>
