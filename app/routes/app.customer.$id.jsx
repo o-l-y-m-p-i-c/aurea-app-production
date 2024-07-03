@@ -1039,7 +1039,7 @@ export default function UserPage(){
                                                         {/* {customer.addresses[0]} */}
                                                         bloonce UG 
                                                         <br />
-                                                        Kapellenstr. 5053332 Bornheim, Germany */}
+                                                        Kapellenstr. 5053332 Bornheim, Germany
                                                         </b>
                                                         <br />
                                                         <br />
