@@ -1019,7 +1019,7 @@ export default function UserPage(){
                                                             </p> */}
                                                             <br />
                                                             <p>
-                                                                <b>Recipe ID:</b> {customer?.id}
+                                                                <b>Recipe ID:</b> {param.id}
                                                             </p>
                                                         </div>
 
