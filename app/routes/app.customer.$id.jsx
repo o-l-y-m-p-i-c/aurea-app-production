@@ -934,6 +934,7 @@ export default function UserPage(){
                                                         }).map(recepie => {
                                                             return recepie.title
                                                         }).toString()}
+                                                        , Hydroxypropylmethylcellulose (HPMC-Capsule), Maltodextrin
                                                         {/* {textareaValue} */}
                                                     </p>
                                                     {/* Vitamin B6, Vitamin B9, Vitamin B12, Vitamin C, Vitamin D, Calciumcarbonate, Ironbisgl ycinate, Selenmethionine, Zincbisgl ycinate, Hydroxy prop y lmeth y lcellulose (HPMC-Capsule) */}
@@ -964,8 +965,8 @@ export default function UserPage(){
                                                                     {recepie[recepie.chosenVariant.toLowerCase()]} {recepie.unit}
                                                                 </div>
                                                                 <div className="image_prev_col">
-                                                                    {nrv  > 1 && '>' }
-                                                                    {nrv < 1 ? nrv * 100 : 100} % 
+                                                                    {/* {nrv  > 1 && '>' } */}
+                                                                    {nrv * 100} % 
                                                                 </div>
                                                             </div>
                                                         })}
@@ -989,7 +990,7 @@ export default function UserPage(){
 
                                                         <p>
                                                             <b>
-                                                                Food supplements must not be used as a substitute for a varied, balanced diet and a health y lifestyle.
+                                                                Food supplements must not be used as a substitute for a varied, balanced diet and a healthy lifestyle.
                                                             </b>
                                                         </p>
 
@@ -1013,6 +1014,19 @@ export default function UserPage(){
                                                                 ...
                                                             </p> */}
                                                         </div>
+
+                                                        <p>
+                                                            <b>
+                                                                bloonce UG
+                                                            </b>
+                                                            <b>
+                                                                Kapellenstr. 5053332 Bornheim, Germany
+                                                            </b>
+                                                            <br />
+                                                            <b>
+                                                                Made in Germany
+                                                            </b>
+                                                        </p>
                                                         
                                                     </div>
                                                 </div>
