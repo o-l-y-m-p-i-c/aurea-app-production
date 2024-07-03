@@ -1007,26 +1007,15 @@ export default function UserPage(){
                                                             <p>
                                                                 {`${day}.${month}.${year}` }
                                                             </p>
-                                                            {/* <p>
+                                                            <p>
                                                                 <b>Recipe ID</b>
                                                             </p>
                                                             <p>
-                                                                ...
-                                                            </p> */}
+                                                                {customer?.id}
+                                                            </p>
                                                         </div>
 
-                                                        <p>
-                                                            <b>
-                                                                bloonce UG
-                                                            </b>
-                                                            <b>
-                                                                Kapellenstr. 5053332 Bornheim, Germany
-                                                            </b>
-                                                            <br />
-                                                            <b>
-                                                                Made in Germany
-                                                            </b>
-                                                        </p>
+                                                       
                                                         
                                                     </div>
                                                 </div>
@@ -1038,15 +1027,17 @@ export default function UserPage(){
                                                     </b>
                                                 </div>
                                                 <div className="image_prev_grid_col">
-                                                    {/* <b> */}
-                                                        {customer.addresses.length > 0 && <p>
-                                                            <b>{customer.addresses[0].address1}</b>
-                                                        </p>}
+                                                        <b> 
                                                         {/* {customer.addresses[0]} */}
-                                                        {/* bloonce UG 
+                                                        bloonce UG 
                                                         <br />
                                                         Kapellenstr. 5053332 Bornheim, Germany */}
-                                                    {/* </b> */}
+                                                        </b>
+                                                        <br />
+                                                        <br />
+                                                        <b>
+                                                            Made in Germany
+                                                        </b>
                                                 </div>
                                             </div>
 
