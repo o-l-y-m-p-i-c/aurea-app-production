@@ -152,46 +152,11 @@ export const action = async ({request}) => {
 
 let options = ''
 
-
-
-// const options = {
-//     // default is `save`
-//     method: 'open',
-//     // default is Resolution.MEDIUM = 3, which should be enough, higher values
-//     // increases the image quality but also the size of the PDF, so be careful
-//     // using values higher than 10 when having multiple pages generated, it
-//     // might cause the page to crash or hang.
-//     resolution: pkg.Resolution.HIGH,
-//     page: {
-//        // margin is in MM, default is Margin.NONE = 0
-//        margin: pkg.Margin.SMALL,
-//        // default is 'A4'
-//        format: 'letter',
-//        // default is 'portrait'
-//        orientation: 'landscape',
-//     },
-//     canvas: {
-//        // default is 'image/jpeg' for better size performance
-//        mimeType: 'image/png',
-//        qualityRatio: 1
-//     },
-//     // Customize any value passed to the jsPDF instance and html2canvas
-//     // function. You probably will not need this and things can break, 
-//     // so use with caution.
-//     overrides: {
-//        // see https://artskydj.github.io/jsPDF/docs/jsPDF.html for more options
-//        pdf: {
-//           compress: true
-//        },
-//        // see https://html2canvas.hertzen.com/configuration for more options
-//        canvas: {
-//           useCORS: true
-//        }
-//     },
-// };
- 
-
 export default function UserPage(){
+
+
+   
+
     const param = useParams()
     const loadedData = useLoaderData()
 
@@ -207,6 +172,10 @@ export default function UserPage(){
     const [recepiesIsEditable, setRecepiesEdit] = useState(true)
 
     const [textareaValue, setTextareaValue] = useState('')
+
+    const [rangeValue, setRangeValue] = useState(40)
+
+
 
     const {data : { customer} , id} = loadedData
 
@@ -265,18 +234,28 @@ export default function UserPage(){
     const today = new Date();
     const day = String(today.getDate()).padStart(2, '0');
     // today.getDate();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const month2 = String(today.getMonth() + 1).padStart(2, '0');
     // today.getMonth() + 1; // Months are zero-indexed
-    const year = today.getFullYear();
+    const year2 = today.getFullYear();
 
     const futureDate = new Date(today);
     futureDate.setDate(today.getDate() + 40);
+
+
+
+
     const futureDay = String(futureDate.getDate()).padStart(2, '0');
     // futureDate.getDate();
     const futureMonth = String(futureDate.getMonth() + 1).padStart(2, '0');
     // futureDate.getMonth() + 1; // Months are zero-indexed
     const futureYear = futureDate.getFullYear();
 
+
+    const [{month, year}, setDate] = useState({month: month2, year: year2});
+    const [selectedDates, setSelectedDates] = useState({
+      start: new Date(),
+      end: new Date(),
+    });
 
     // const parsedNotes = JSON.parse(note.trim()) || []
 
@@ -892,29 +871,10 @@ export default function UserPage(){
                             {/* <PrintableComponent ref={componentRef}> */}
                                 <div className="imgWrap" >
                                     <h2 className="h2">Preview:</h2>
-                                    {/* <label className="labelWidthInput">
-                                        <b>
-                                        Ingredients
-                                        </b>
-                                        <textarea type="text" rows={5} onChange={(e)=>{
-                                            setTextareaValue(e.currentTarget.value)
-                                        }} value={prevRecepies.filter((recepie, __index) => {
-                                            if(recepie.chosenVariant === '-'){
-                                                return false
-                                            }
-                                            return true
-                                        }).map(recepie => {
-                                            return recepie.title
-                                        }).toString()}  />
-                                    </label> */}
                                     
                                     <div className="img_prev_container">
                                     {/* ref={imageRef} */}
                                         <div className="img_prev" ref={targetPringRef} >
-                                            {/* <div className="img_prev_head">
-                                                <img src="https://aurea-dev.myshopify.com/cdn/shop/files/logo2.svg?v=1703612849&width=600" width={200} alt="" />
-                                            </div>
-                                            <hr /> */}
                                             
                                             <div className="image_prev_grid">
                                                 <div className="image_prev_grid_col">
@@ -1012,7 +972,8 @@ export default function UserPage(){
                                                         
                                                         <div className="">
                                                             <p>
-                                                                <b>Best before:</b> {`${day}.${month}.${year}` }
+                                                                <b>Best before:</b> <RenderDate selectedDates={selectedDates} rangeValue={rangeValue} />
+                                                                 {/* {`${day}.${month}.${year}` } */}
                                                             </p>
                                                             {/* <p>
                                                                 {`${day}.${month}.${year}` }
@@ -1048,31 +1009,6 @@ export default function UserPage(){
                                                     </b>  
                                                 </div>
                                             </div>
-
-
-                                            {/* <div > */}
-                                           
-                                            {/* </div> */}
-                                            {/* <div className="image_prev_table">
-                                                {prevRecepies.map((recepie, __index) => {
-                                                    return <div key={`image-${__index}`} className="image_prev_row">
-                                                        <div className="image_prev_col">
-                                                            {recepie.title}
-                                                        </div>
-                                                        <div className="image_prev_col">
-                                                            {recepie.chosenVariant}
-                                                        </div>
-                                                    </div>
-                                                })}
-                                            </div> */}
-                                            {/* <div className="">
-
-                                            </div>
-                                            <div className="image_prev_bottom">
-                                                <hr />
-                                                <p className="image_prev_p">* Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusantium vero earum ab sint error aut praesentium corporis numquam soluta est esse qui non, eaque suscipit. Commodi ut quam voluptates at.</p>
-                                                <p className="image_prev_p">* Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusantium vero earum ab sint error aut praesentium corporis numquam soluta est esse qui non, eaque suscipit. Commodi ut quam voluptates at.</p>
-                                            </div> */}
                                             
                                         </div>
                                     </div>
@@ -1081,7 +1017,24 @@ export default function UserPage(){
 
                             
                             <div className="row">
-                                <DatePickerExample />
+                                <DatePickerExample 
+                                    month={month}
+                                    year={year}
+                                    setDate={setDate}
+                                    selectedDates={selectedDates} 
+                                    setSelectedDates={setSelectedDates}
+                                />
+                            </div>
+
+                            <div className="row">
+                                <p>
+                                    <input type="text" onChange={setRangeValue} />
+                                </p>
+                                <p>
+                                    <b>
+                                        Range for "before to":
+                                    </b> {rangeValue}
+                                </p>
                             </div>
 
                             <div className="row">
@@ -1093,14 +1046,6 @@ export default function UserPage(){
                                     }} className="recepies-btn-export">
                                         Export
                                     </button>}
-
-                                    {/* <div onClick={handlePrint}>
-                                        EXPORT 
-                                    </div> */}
-                                    {/* {componentRef?.current && <ReactToPrint
-                                        trigger={() => <button>Export to PDF</button>}
-                                        content={() => componentRef.current}
-                                    />} */}
                                 </div>
                             </div>
                             <div className="row" style={{display:'none'}}>
@@ -1132,12 +1077,12 @@ export default function UserPage(){
 }
 
 
-function DatePickerExample() {
-    const [{month, year}, setDate] = useState({month: 1, year: 2018});
-    const [selectedDates, setSelectedDates] = useState({
-      start: new Date('Wed Feb 07 2018 00:00:00 GMT-0500 (EST)'),
-      end: new Date('Wed Feb 07 2018 00:00:00 GMT-0500 (EST)'),
-    });
+function DatePickerExample({month, year, setDate, selectedDates, setSelectedDates}) {
+    // const [{month, year}, setDate] = useState({month: 1, year: 2018});
+    // const [selectedDates, setSelectedDates] = useState({
+    //   start: new Date('Wed Feb 07 2018 00:00:00 GMT-0500 (EST)'),
+    //   end: new Date('Wed Feb 07 2018 00:00:00 GMT-0500 (EST)'),
+    // });
   
     const handleMonthChange = useCallback(
       (month, year) => setDate({month, year}),
@@ -1154,3 +1099,29 @@ function DatePickerExample() {
       />
     );
   }
+
+function RenderDate({selectedDates, rangeValue = 0}){
+
+    const today = new Date(selectedDates);
+    const day = String(today.getDate()).padStart(2, '0');
+    // today.getDate();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    // today.getMonth() + 1; // Months are zero-indexed
+    const year = today.getFullYear();
+
+    const futureDate = new Date(today);
+    futureDate.setDate(today.getDate() + 40);
+
+
+    const futureDateDay = String(futureDate.getDate()).padStart(2, '0');
+    // today.getDate();
+    const futureDateMonth = String(futureDate.getMonth() + 1).padStart(2, '0');
+    // today.getMonth() + 1; // Months are zero-indexed
+    const futureDateYear = futureDate.getFullYear();
+
+    if(rangeValue > 0){
+        return `${futureDateDay}.${futureDateMonth}.${futureDateYear}`
+    }
+
+    return `${day}.${month}.${year}`
+}
