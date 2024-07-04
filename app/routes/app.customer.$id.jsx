@@ -1102,7 +1102,7 @@ function DatePickerExample({month, year, setDate, selectedDates, setSelectedDate
 
 function RenderDate({selectedDates, rangeValue = 0}){
 
-    const today = new Date(selectedDates);
+    const today = new Date(selectedDates.end);
     const day = String(today.getDate()).padStart(2, '0');
     // today.getDate();
     const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -1110,7 +1110,7 @@ function RenderDate({selectedDates, rangeValue = 0}){
     const year = today.getFullYear();
 
     const futureDate = new Date(today);
-    futureDate.setDate(today.getDate() + 40);
+    futureDate.setDate(today.getDate() + rangeValue);
 
 
     const futureDateDay = String(futureDate.getDate()).padStart(2, '0');
