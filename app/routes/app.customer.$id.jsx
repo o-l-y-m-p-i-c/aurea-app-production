@@ -1028,13 +1028,13 @@ export default function UserPage(){
 
                             <div className="row">
                                 <p>
-                                    <input type="number" onChange={setRangeValue} />
+                                    Range for "before to": <input type="number" onChange={(e)=>setRangeValue(e.target.value)} defaultValue={rangeValue} />
                                 </p>
-                                <p>
+                                {/* <p>
                                     <b>
                                         Range for "before to":
                                     </b> {rangeValue}
-                                </p>
+                                </p> */}
                             </div>
 
                             <div className="row">
