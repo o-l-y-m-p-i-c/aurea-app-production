@@ -1,11 +1,11 @@
 import {Link , useActionData, useLoaderData, useParams, useSubmit } from "@remix-run/react"
 import { TitleBar } from "@shopify/app-bridge-react";
-import { BlockStack, Card, Layout, Page, Text } from "@shopify/polaris";
+import { BlockStack, Card, DatePicker, Layout, Page, Text } from "@shopify/polaris";
 import html2canvas from "html2canvas";
 
 // import jsPDF from "jspdf";
 import _ from "lodash";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useRef } from "react";
 import { useState } from "react";
 // import ReactToPrint from 'react-to-print';  // Import default
@@ -1029,11 +1029,6 @@ export default function UserPage(){
                                                             <br />
                                                             Kapellenstr. 5053332 Bornheim, Germany
                                                             </b>
-                                                            <br />
-                                                            <br />
-                                                            <b>
-                                                                Made in Germany
-                                                            </b>
                                                         </p>
 
                                                        
@@ -1048,7 +1043,9 @@ export default function UserPage(){
                                                     </b>
                                                 </div>
                                                 <div className="image_prev_grid_col">
-                                                        
+                                                    <b>
+                                                        Made in Germany
+                                                    </b>  
                                                 </div>
                                             </div>
 
@@ -1083,6 +1080,10 @@ export default function UserPage(){
                             {/* </PrintableComponent> */}
 
                             
+                            <div className="row">
+                                <DatePickerExample />
+                            </div>
+
                             <div className="row">
                                 <div className="recepies-btns">
                                     {recepiesIsEditable && <button onClick={()=>{
@@ -1129,3 +1130,27 @@ export default function UserPage(){
         </Page>
     </>
 }
+
+
+function DatePickerExample() {
+    const [{month, year}, setDate] = useState({month: 1, year: 2018});
+    const [selectedDates, setSelectedDates] = useState({
+      start: new Date('Wed Feb 07 2018 00:00:00 GMT-0500 (EST)'),
+      end: new Date('Wed Feb 07 2018 00:00:00 GMT-0500 (EST)'),
+    });
+  
+    const handleMonthChange = useCallback(
+      (month, year) => setDate({month, year}),
+      [],
+    );
+  
+    return (
+      <DatePicker
+        month={month}
+        year={year}
+        onChange={setSelectedDates}
+        onMonthChange={handleMonthChange}
+        selected={selectedDates}
+      />
+    );
+  }
