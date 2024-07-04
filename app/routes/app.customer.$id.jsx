@@ -972,7 +972,7 @@ export default function UserPage(){
                                                         
                                                         <div className="">
                                                             <p>
-                                                                <b>Best before:</b> <RenderDate selectedDates={selectedDates} rangeValue={rangeValue} />
+                                                                <b>Best before:</b> <RenderDate selectedDates={selectedDates} rangeValue={Number(rangeValue)} />
                                                                  {/* {`${day}.${month}.${year}` } */}
                                                             </p>
                                                             {/* <p>
@@ -1028,7 +1028,7 @@ export default function UserPage(){
 
                             <div className="row">
                                 <p>
-                                    <input type="text" onChange={setRangeValue} />
+                                    <input type="number" onChange={setRangeValue} />
                                 </p>
                                 <p>
                                     <b>
