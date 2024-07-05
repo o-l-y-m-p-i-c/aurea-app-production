@@ -2,17 +2,22 @@ require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 
+const cors = require('cors');
+
 const app = express();
 const port = process.env.PORT || 3000;
 const shopifyAccessToken = process.env.SHOPIFY_ACCESS_TOKEN;
 
 app.use(express.json());
 
+app.use(cors());
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*")
+  res.header("Content-Type","application/json")
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested, Content-Type, Accept Authorization"
+    "Origin, X-Requested, Accept Authorization"
   )
   if (req.method === "OPTIONS") {
     res.header(
@@ -67,7 +72,6 @@ app.get('/proxy', async (req, res) => {
 app.post('/proxy', async (req, res) => {
   try {
     const { url, method, body, useShopifyAuth } = req.body;
-
 
     return res.status(400).json({ error: "checker", body: req.body });
 
