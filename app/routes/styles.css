@@ -458,5 +458,6 @@ html{
 
 .date_row__input_container__outer{
     display: flex;
+    align-items: flex-end;
     gap: var(--gap);
 }
