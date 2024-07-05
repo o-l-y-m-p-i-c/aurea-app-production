@@ -810,40 +810,43 @@ export default function UserPage(){
                     <Layout.Section >
                         <div className="" id="preview">
                             <Card>
-                                <div className="img_prev" style={{border:'none'}}>
-                                    <h2 className="h2">
-                                        Production date
-                                    </h2>
+                                <div className="imgWrap" >
+                                    <h2 className="h2">Production date:</h2>
                                     <div className="img_prev_container">
-                                        <div className="row date_row">
-                                            <div className="col">
-                                                
-                                                <DatePickerExample 
-                                                    month={month}
-                                                    year={year}
-                                                    setDate={setDate}
-                                                    selectedDates={selectedDates} 
-                                                    setSelectedDates={setSelectedDates}
-                                                />
-                                            </div>
-                                            <div className="col date_row__result_col">
-                                                <span className="date_row__symbol">+</span>
-                                                <div className="date_row__input_container__outer">
-                                                    <input type="number" className="date_row__input_container" onChange={(e)=>setRangeValue(e.target.value)} defaultValue={rangeValue} />
-                                                    <span>
-                                                        days
-                                                    </span>
+                                        <div className="img_prev" style={{border:'none'}}>
+                                            
+                                            <div className="img_prev_container">
+                                                <div className="row date_row">
+                                                    <div className="col">
+                                                        
+                                                        <DatePickerExample 
+                                                            month={month}
+                                                            year={year}
+                                                            setDate={setDate}
+                                                            selectedDates={selectedDates} 
+                                                            setSelectedDates={setSelectedDates}
+                                                        />
+                                                    </div>
+                                                    <div className="col date_row__result_col">
+                                                        <span className="date_row__symbol">+</span>
+                                                        <div className="date_row__input_container__outer">
+                                                            <input type="number" className="date_row__input_container" onChange={(e)=>setRangeValue(e.target.value)} defaultValue={rangeValue} />
+                                                            <span>
+                                                                days
+                                                            </span>
+                                                        </div>
+                                                        <span className="date_row__symbol">=</span>
+                                                        <span className="data_row__result_date">
+                                                            Best before: <RenderDate selectedDates={selectedDates} rangeValue={Number(rangeValue)} /> 
+                                                        </span>
+                                                        {/* <p>
+                                                            Number of days: <input type="number" onChange={(e)=>setRangeValue(e.target.value)} defaultValue={rangeValue} />
+                                                        </p>
+                                                        <p>
+                                                            {day}.{month2}.{year2} + {rangeValue} days = <RenderDate selectedDates={selectedDates} rangeValue={Number(rangeValue)} /> 
+                                                        </p> */}
+                                                    </div>
                                                 </div>
-                                                <span className="date_row__symbol">=</span>
-                                                <span className="data_row__result_date">
-                                                    Best before: <RenderDate selectedDates={selectedDates} rangeValue={Number(rangeValue)} /> 
-                                                </span>
-                                                {/* <p>
-                                                    Number of days: <input type="number" onChange={(e)=>setRangeValue(e.target.value)} defaultValue={rangeValue} />
-                                                </p>
-                                                <p>
-                                                    {day}.{month2}.{year2} + {rangeValue} days = <RenderDate selectedDates={selectedDates} rangeValue={Number(rangeValue)} /> 
-                                                </p> */}
                                             </div>
                                         </div>
                                     </div>
