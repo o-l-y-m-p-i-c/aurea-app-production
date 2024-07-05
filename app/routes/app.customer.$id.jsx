@@ -518,20 +518,6 @@ export default function UserPage(){
             const downloadIcon = downloadBtnRef.current
             canvasWrap.current.innerHTML = ""
             const imgData = canvas.toDataURL("image/jpeg")
-            // .replace("image/jpeg", "image/octet-stream")
-            // console.log(aa)
-            // setImage(()=>aa)
-
-            // const pdf = new jsPDF({
-            //     orientation: 'landscape',
-            //     unit: 'pt',
-            //     format: [sizes.width, sizes.height]
-            //   });
-
-            // pdf.addImage(imgData, 'JPEG', 0, 0, sizes.width, sizes.height);
-
-            // pdf.save('screenshot.pdf');
-
 
 
             canvas.toBlob((blob) => { 
@@ -539,19 +525,6 @@ export default function UserPage(){
                 const url = URL.createObjectURL(blob);
                 downloadIcon.href = url;
                 downloadIcon.download = customer.firstName + '.pdf'
-
-                // const pdf = new jsPDF({
-                //     orientation: 'landscape',
-                //     unit: 'pt',
-                //     format: [canvas.width, canvas.height]
-                //   });
-
-                // pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width, canvas.height);
-
-                // pdf.save('screenshot.pdf');
-
-            
-                // 'screenshot.jpg';
                 downloadIcon.click();
         
                 // Cleanup: Revoke the object URL after the download is triggered
@@ -577,38 +550,6 @@ export default function UserPage(){
     if(usePDF){
         const { toPDF, targetRef } = usePDF({
             filename: 'page.pdf',
-            // method: 'open',
-            // resolution: pkg.Resolution.HIGH,
-            // page: {
-            //     // margin is in MM, default is Margin.NONE = 0
-            //     // margin: pkg.Margin.SMALL,
-            //     // default is 'A4'
-            //     unit:'px',
-            //     format: 'letter',
-            //     // default is 'portrait'
-            //     orientation: 'landscape',
-                
-            // },
-            // canvas: {
-            //     // default is 'image/jpeg' for better size performance
-            //     mimeType: 'image/png',
-            //     qualityRatio: 1
-            // },
-            // overrides: {
-            //     // see https://artskydj.github.io/jsPDF/docs/jsPDF.html for more options
-            //     pdf: {
-            //        compress: true
-            //     },
-            //     // see https://html2canvas.hertzen.com/configuration for more options
-            //     canvas: {
-            //        useCORS: true
-            //     }
-            //  },
-            // orientation: 'landscape',
-            // page:{
-            // orientation: {
-            //     orientation: 'landscape'
-            // }
         })
         handleClickPrint = () => toPDF()
         targetPringRef = targetRef
@@ -868,6 +809,30 @@ export default function UserPage(){
                     <Layout.Section >
                     <div className="" id="preview">
                         <Card>
+                            <div className="">
+                                <div className="row date_row">
+                                    <div className="col">
+                                        <h2>
+                                            Production date
+                                        </h2>
+                                        <DatePickerExample 
+                                            month={month}
+                                            year={year}
+                                            setDate={setDate}
+                                            selectedDates={selectedDates} 
+                                            setSelectedDates={setSelectedDates}
+                                        />
+                                    </div>
+                                    <div className="col">
+                                        <p>
+                                            Number of dates: <input type="number" onChange={(e)=>setRangeValue(e.target.value)} defaultValue={rangeValue} />
+                                        </p>
+                                        <p>
+                                            {day}.{month2}.{year2} + {rangeValue} days = <RenderDate selectedDates={selectedDates} rangeValue={Number(rangeValue)} /> 
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                             {/* <PrintableComponent ref={componentRef}> */}
                                 <div className="imgWrap" >
                                     <h2 className="h2">Preview:</h2>
@@ -1016,26 +981,7 @@ export default function UserPage(){
                             {/* </PrintableComponent> */}
 
                             
-                            <div className="row">
-                                <DatePickerExample 
-                                    month={month}
-                                    year={year}
-                                    setDate={setDate}
-                                    selectedDates={selectedDates} 
-                                    setSelectedDates={setSelectedDates}
-                                />
-                            </div>
-
-                            <div className="row">
-                                <p>
-                                    Range for "before to": <input type="number" onChange={(e)=>setRangeValue(e.target.value)} defaultValue={rangeValue} />
-                                </p>
-                                {/* <p>
-                                    <b>
-                                        Range for "before to":
-                                    </b> {rangeValue}
-                                </p> */}
-                            </div>
+                            
 
                             <div className="row">
                                 <div className="recepies-btns">

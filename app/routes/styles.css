@@ -416,3 +416,9 @@ html{
     padding: 5px;
     min-width: 50px;
 }
+
+.date_row{
+    display:grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 10px;
+}
