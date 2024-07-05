@@ -256,8 +256,8 @@ export default function UserPage(){
 
     const [{month, year}, setDate] = useState({month: Number(today.getMonth() + 1), year: year2});
     const [selectedDates, setSelectedDates] = useState({
-        start: new Date(today.getDate()),
-        end: new Date(today.getDate()),
+        start: new Date(),
+        end: new Date(),
     });
 
     // const parsedNotes = JSON.parse(note.trim()) || []
