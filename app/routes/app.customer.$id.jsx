@@ -806,33 +806,42 @@ export default function UserPage(){
                         </Card>
                     </Layout.Section>
                     
+
+                    <Layout.Section >
+                        <div className="" id="preview">
+                            <Card>
+                                <div className="img_prev">
+                                    <div className="row date_row">
+                                        <div className="col">
+                                            <h2>
+                                                Production date
+                                            </h2>
+                                            <DatePickerExample 
+                                                month={month}
+                                                year={year}
+                                                setDate={setDate}
+                                                selectedDates={selectedDates} 
+                                                setSelectedDates={setSelectedDates}
+                                            />
+                                        </div>
+                                        <div className="col">
+                                            <p>
+                                                Number of dates: <input type="number" onChange={(e)=>setRangeValue(e.target.value)} defaultValue={rangeValue} />
+                                            </p>
+                                            <p>
+                                                {day}.{month2}.{year2} + {rangeValue} days = <RenderDate selectedDates={selectedDates} rangeValue={Number(rangeValue)} /> 
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Card>
+                        </div>
+                    </Layout.Section>
+
                     <Layout.Section >
                     <div className="" id="preview">
                         <Card>
-                            <div className="">
-                                <div className="row date_row">
-                                    <div className="col">
-                                        <h2>
-                                            Production date
-                                        </h2>
-                                        <DatePickerExample 
-                                            month={month}
-                                            year={year}
-                                            setDate={setDate}
-                                            selectedDates={selectedDates} 
-                                            setSelectedDates={setSelectedDates}
-                                        />
-                                    </div>
-                                    <div className="col">
-                                        <p>
-                                            Number of dates: <input type="number" onChange={(e)=>setRangeValue(e.target.value)} defaultValue={rangeValue} />
-                                        </p>
-                                        <p>
-                                            {day}.{month2}.{year2} + {rangeValue} days = <RenderDate selectedDates={selectedDates} rangeValue={Number(rangeValue)} /> 
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+                            
                             {/* <PrintableComponent ref={componentRef}> */}
                                 <div className="imgWrap" >
                                     <h2 className="h2">Preview:</h2>
