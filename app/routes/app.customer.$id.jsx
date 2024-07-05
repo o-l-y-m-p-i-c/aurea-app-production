@@ -254,7 +254,7 @@ export default function UserPage(){
 
 
 
-    const [{month, year}, setDate] = useState({month: Number(today.getMonth() + 1), year: year2});
+    const [{month, year}, setDate] = useState({month: Number(today.getMonth()), year: year2});
     const [selectedDates, setSelectedDates] = useState({
         start: new Date(),
         end: new Date(),
