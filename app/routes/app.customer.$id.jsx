@@ -811,12 +811,13 @@ export default function UserPage(){
                         <div className="" id="preview">
                             <Card>
                                 <div className="img_prev">
+                                    <h2>
+                                        Production date
+                                    </h2>
                                     <div className="img_prev_container">
                                         <div className="row date_row">
                                             <div className="col">
-                                                <h2>
-                                                    Production date
-                                                </h2>
+                                                
                                                 <DatePickerExample 
                                                     month={month}
                                                     year={year}
