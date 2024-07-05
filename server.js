@@ -69,7 +69,7 @@ app.post('/proxy', async (req, res) => {
     const { url, method, body, useShopifyAuth } = req.body;
 
 
-    return res.status(400).json({ error: req.body });
+    return res.status(400).json({ error: "checker",url, method, body, useShopifyAuth });
 
 
 
