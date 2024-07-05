@@ -811,7 +811,7 @@ export default function UserPage(){
                         <div className="" id="preview">
                             <Card>
                                 <div className="img_prev" style={{border:'none'}}>
-                                    <h2>
+                                    <h2 className="h2">
                                         Production date
                                     </h2>
                                     <div className="img_prev_container">
