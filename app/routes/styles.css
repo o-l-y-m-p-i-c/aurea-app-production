@@ -461,3 +461,8 @@ html{
     align-items: flex-end;
     gap: var(--gap);
 }
+
+.date_row .col:first-child{
+    padding: 10px;
+    border: 1px solid black;
+}
