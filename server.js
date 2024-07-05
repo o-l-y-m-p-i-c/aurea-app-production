@@ -92,7 +92,7 @@ app.post('/proxy', async (req, res) => {
       headers: {}
     };
 
-    if (useShopifyAuth === 'true' && shopifyAccessToken) {
+    if ((useShopifyAuth === true || useShopifyAuth === 'true') && shopifyAccessToken) {
       axiosConfig.headers['X-Shopify-Access-Token'] = shopifyAccessToken;
       axiosConfig.headers['Access-Control-Allow-Origin'] = '*';
       axiosConfig.headers['Content-Type'] = 'application/json';
