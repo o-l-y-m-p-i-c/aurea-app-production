@@ -828,7 +828,7 @@ export default function UserPage(){
                                             </div>
                                             <div className="col date_row__result_col">
                                                 <span className="date_row__symbol">+</span>
-                                                <div className="">
+                                                <div className="date_row__input_container__outer">
                                                     <input type="number" className="date_row__input_container" onChange={(e)=>setRangeValue(e.target.value)} defaultValue={rangeValue} />
                                                     <span>
                                                         days

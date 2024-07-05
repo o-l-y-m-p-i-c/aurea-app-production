@@ -430,8 +430,10 @@ html{
 }
 
 .date_row__result_col{
+    --gap: 10px;
     display: flex;
     align-items: center;
+    gap: var(--gap)
     
 }
 
@@ -448,5 +450,13 @@ html{
 
 .data_row__result_date{
     font-weight: 600;
-    font-size: 30px;
+    font-size: 25px;
+    line-height: 1.2;
+    text-align: right;
+    margin-left: auto;
+}
+
+.date_row__input_container__outer{
+    display: flex;
+    gap: var(--gap);
 }
