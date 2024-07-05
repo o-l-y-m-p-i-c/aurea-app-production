@@ -251,10 +251,13 @@ export default function UserPage(){
     const futureYear = futureDate.getFullYear();
 
 
+
+
+
     const [{month, year}, setDate] = useState({month: Number(today.getMonth() + 1), year: year2});
     const [selectedDates, setSelectedDates] = useState({
-        start: new Date('Wed Feb 07 2018 00:00:00 GMT-0500 (EST)'),
-        end: new Date('Wed Feb 07 2018 00:00:00 GMT-0500 (EST)'),
+        start: new Date(today.getDate()),
+        end: new Date(today.getDate()),
     });
 
     // const parsedNotes = JSON.parse(note.trim()) || []
