@@ -428,3 +428,25 @@ html{
     color: var(--p-color-text-brand-on-bg-fill);
   outline: var(--p-border-width-025) solid transparent;
 }
+
+.date_row__result_col{
+    display: flex;
+    align-items: center;
+    
+}
+
+.date_row__symbol{
+    display: inline-block;
+    font-weight: 600;
+    font-size: 25px;
+}
+
+.date_row__input_container{
+    width: 90px;
+    height: 40px;
+}
+
+.data_row__result_date{
+    font-weight: 600;
+    font-size: 30px;
+}
