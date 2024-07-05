@@ -66,7 +66,7 @@ app.get('/proxy', async (req, res) => {
 
 app.post('/proxy', async (req, res) => {
   try {
-    const { url, method, body, useShopifyAuth } = req.body;
+    const { url, method, body, useShopifyAuth } = JSON.parse(req.body);
 
     if (!url) {
       return res.status(400).json({ error: 'URL is required' });
