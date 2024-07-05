@@ -64,6 +64,52 @@ app.get('/proxy', async (req, res) => {
   }
 });
 
+app.post('/proxy', async (req, res) => {
+  try {
+    const { url, method, body, useShopifyAuth } = req.body;
+
+    if (!url) {
+      return res.status(400).json({ error: 'URL is required' });
+    }
+
+    // res.status(200).json({ 
+    //   message: "Proxy-dog endpoint reached successfully",
+    //   result: req.body
+    // });
+
+    const axiosConfig = {
+      method: method || 'POST',
+      url: url,
+      headers: {}
+    };
+
+    if (useShopifyAuth === 'true' && shopifyAccessToken) {
+      axiosConfig.headers['X-Shopify-Access-Token'] = shopifyAccessToken;
+      axiosConfig.headers['Access-Control-Allow-Origin'] = '*';
+      axiosConfig.headers['Content-Type'] = 'application/json';
+    }
+
+
+    if (body) {
+      try {
+        axiosConfig.data = body;
+      } catch (error) {
+        return res.status(400).json({ error: 'Invalid body JSON' });
+      }
+    }
+
+    const response = await axios(axiosConfig);
+
+    res.status(response.status).json(response.data);
+  } catch (error) {
+    if (error.response) {
+      res.status(error.response.status).json(error.response.data);
+    } else {
+      res.status(500).json({ error: 'An error occurred while processing your request' });
+    }
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
   console.log(`Shopify Auth ${shopifyAccessToken ? 'is' : 'is not'} configured`);
