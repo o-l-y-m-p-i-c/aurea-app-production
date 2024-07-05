@@ -422,3 +422,9 @@ html{
     grid-template-columns: repeat(2,1fr);
     gap: 10px;
 }
+
+.date_row button:has(span.Polaris-Text--bold){
+    background: var(--p-color-bg-fill-brand-hover);
+    color: var(--p-color-text-brand-on-bg-fill);
+  outline: var(--p-border-width-025) solid transparent;
+}

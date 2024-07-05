@@ -828,7 +828,7 @@ export default function UserPage(){
                                             </div>
                                             <div className="col">
                                                 <p>
-                                                    Number of dates: <input type="number" onChange={(e)=>setRangeValue(e.target.value)} defaultValue={rangeValue} />
+                                                    Number of days: <input type="number" onChange={(e)=>setRangeValue(e.target.value)} defaultValue={rangeValue} />
                                                 </p>
                                                 <p>
                                                     {day}.{month2}.{year2} + {rangeValue} days = <RenderDate selectedDates={selectedDates} rangeValue={Number(rangeValue)} /> 
