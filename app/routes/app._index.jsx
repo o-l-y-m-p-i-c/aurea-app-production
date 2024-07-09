@@ -248,7 +248,11 @@ export default function Customers() {
         >
           {customer[0]}
         </Link>,
-        customer[1],
+         <Link
+         to={`/app/customer/${customer[1]}`}
+       >
+         {customer[1]}
+       </Link>,
         customer[2],
         customer[3],
         customer[4]  

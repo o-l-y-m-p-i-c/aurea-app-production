@@ -582,7 +582,7 @@ export default function UserPage(){
                                     Main page of customer
                                 </h2>
                                 
-                                <a href={`https://admin.shopify.com/store/aurea-dev/customers/${id}`}>
+                                <a href={`https://admin.shopify.com/store/e7098f-02/customers/${id}`}>
                                     Click here
                                 </a>
                             </div>
