@@ -22,7 +22,7 @@ export const CustomerList = ({
 
     const deselectedOptions = useMemo(
         () => customers.map(({node}) => {return { 
-          value: node.firstName.toLowerCase(),
+          value: node.firstName ? node.firstName.toLowerCase() : null,
           label: node.firstName
         }}),
         [],
