@@ -485,6 +485,25 @@ export default function UserPage(){
         setRecepies(updatedRecepies)
     }
 
+    const changeRecepiesChosenValueBtnClick = (arg = 0, key) => {
+
+        if(recepiesIsEditable){
+            return
+        }
+
+        const updatedRecepies = recepies.map(recepie => {
+
+            if(key !== recepie.key) return recepie
+
+            recepie.chosenVariant = recepie.btns[arg].title
+            
+            return {...recepie}
+        })
+
+        setRecepies(updatedRecepies)
+    }
+
+
 
     const handleSaveRecepies = () => {
         setRecepiesEdit(prev=>true)
@@ -740,7 +759,11 @@ export default function UserPage(){
                                             <div className="recepie-results">
                                                 {recepie.btns.map((recepieBtn,_btnIndex) => {
                                                     // const value = parsedMetafields.find(({node} = metafield) => node.key === recepie.key).value || '-'
-                                                    return <button key={`editable-${__index}-${_btnIndex}`} className={`recepie-btn ${recepie.chosenVariant === recepieBtn.title && 'chosen'}`}>
+                                                    return <button 
+                                                        onClick={()=>changeRecepiesChosenValueBtnClick(_btnIndex,recepie.key)} 
+                                                        key={`editable-${__index}-${_btnIndex}`} 
+                                                        className={`recepie-btn ${recepie.chosenVariant === recepieBtn.title && 'chosen'}`}
+                                                    >
                                                         {recepieBtn.title}
                                                     </button>
                                                 })}
