@@ -80,7 +80,7 @@ html{
     border-radius: 10px;
     text-align: center;
     transition: all 0.2s ease-out;
-    cursor: pointer;
+    /* cursor: pointer; */
     font-weight: 500;
     min-width:  125px;
 }
@@ -90,12 +90,11 @@ html{
     border-color: #7EB28E;
 }
 
-.anserw:hover{
-    /* color:#7EB28E; */
+/* .anserw:hover{
     border-color: #7EB28E;
     background-color: #7EB28E;
     color: #fff;
-}
+} */
 
 .question{
     display: flex;
@@ -129,6 +128,7 @@ html{
     background: transparent;
     border-radius: 10px;
     font-weight: 500;
+    cursor: not-allowed;
 }
 
 .recepie-btn.editable{
@@ -168,6 +168,13 @@ html{
     border-color: #7EB28E;
     background-color: #7EB28E;
     color: #fff;
+}
+
+.recepie-table.edit .recepie-btn:hover{
+    border-color: #7EB28E;
+    background-color: #7EB28E;
+    color: #fff;
+    cursor: pointer;
 }
 
 .recepie-label{
@@ -225,6 +232,7 @@ html{
     /* width: 100%; */
     width: 800px;
     min-width: 800px;
+    height: 566.6px;
     /* min-height: 1131px;
     height: 1131px; */
 
@@ -254,7 +262,12 @@ html{
     gap: 10px;
     /* display: flex; */
     /* justify-content: space-between; */
-    margin: 15px 0;
+    /* margin: 15px 0; */
+    margin-bottom: 14.5px;
+}
+
+.image_prev_row:last-child{
+    margin-bottom: 0px;
 }
 
 .image_prev_row .image_prev_col
@@ -322,7 +335,7 @@ html{
 .image_prev_grid{
     display: grid;
     grid-template-columns: repeat(2,1fr);
-    gap: 20px;
+    gap: 15px;
     column-gap: 60px;
     justify-content: space-between;
 }
@@ -337,7 +350,8 @@ html{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 30px
+    gap: 25px
+    /* gap: 29px */
 }
 
 .image_prev_title{
@@ -465,4 +479,7 @@ html{
 .date_row .col:first-child{
     padding: 10px;
     border: 1px solid black;
+}
+.no-borders{
+    border: none;
 }

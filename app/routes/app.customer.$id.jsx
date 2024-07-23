@@ -572,6 +572,12 @@ export default function UserPage(){
     if(usePDF){
         const { toPDF, targetRef } = usePDF({
             filename: 'page.pdf',
+            page:{
+                format : 'A6',
+                orientation : 'landscape',
+            }
+            // format: 'A6',
+            // orientation: 'landscape',
         })
         handleClickPrint = () => toPDF()
         targetPringRef = targetRef
@@ -839,7 +845,7 @@ export default function UserPage(){
                                 <div className="imgWrap" >
                                     <h2 className="h2">Production date:</h2>
                                     <div className="img_prev_container">
-                                        <div className="img_prev" style={{border:'none'}}>
+                                        <div className="img_prev no-borders" style={{border:'none'}}>
                                             
 
                                             <div className="row date_row">
@@ -891,142 +897,147 @@ export default function UserPage(){
                                     
                                     <div className="img_prev_container">
                                     {/* ref={imageRef} */}
-                                        <div className="img_prev" ref={targetPringRef} >
-                                            
-                                            <div className="image_prev_grid">
-                                                <div className="image_prev_grid_col">
-                                                    <div className="image_prev_title">
+                                        <div className="" style={{width: 804,border:'2px solid black', margin: '0 auto'}}>
+                                            <div className="img_prev no-borders" ref={targetPringRef} >
+                                                
+                                                <div className="image_prev_grid">
+                                                    <div className="image_prev_grid_col">
+                                                        <div className="image_prev_title">
+                                                            <b>
+                                                                Made for {customer.firstName || param.id}
+                                                            </b>
+                                                        </div>
+                                                    </div>
+                                                    <div className="image_prev_grid_col">
+                                                        <div className="image_prev_title rightAlign">
+                                                            <b>
+                                                                Food Supplement
+                                                            </b>
+                                                        </div>
+                                                    </div>
+                                                    <div className="image_prev_grid_col_full" >
                                                         <b>
-                                                            Made for {customer.firstName}
+                                                            Ingredients 
+                                                        </b> 
+                                                        <p style={{whiteSpace: 'pre-wrap'}}>
+                                                            {prevRecepies.filter((recepie, __index) => {
+                                                                if(recepie.chosenVariant === '-'){
+                                                                    return false
+                                                                }
+                                                                return true
+                                                            }).map(recepie => {
+                                                                return recepie.ingredientName
+                                                            }).toString().replaceAll(',', ", ")}
+                                                            , Hydroxypropylmethylcellulose (HPMC-Capsule), Maltodextrin
+                                                            {/* {textareaValue} */}
+                                                        </p>
+                                                        {/* Vitamin B6, Vitamin B9, Vitamin B12, Vitamin C, Vitamin D, Calciumcarbonate, Ironbisgl ycinate, Selenmethionine, Zincbisgl ycinate, Hydroxy prop y lmeth y lcellulose (HPMC-Capsule) */}
+                                                    </div>
+                                                    <div className="image_prev_grid_col">
+                                                        <div className="image_prev_table">
+                                                            <div  className="image_prev_row image_prev_row_head">
+                                                                <div className="image_prev_col">
+                                                                    1 capsule (daily dose) provides
+                                                                </div>
+                                                                <div className="image_prev_col">
+                                                                    {/* %NRV* */}
+                                                                </div>
+                                                                <div className="image_prev_col">
+                                                                    %NRV*
+                                                                </div>
+                                                            </div>
+                                                            {prevRecepies.filter(recepie => {
+                                                                if(recepie.chosenVariant === '-' || recepie[recepie.chosenVariant.toLowerCase()] === 0) return false;
+                                                                return true;
+                                                            })?.map((recepie, __index) => {
+                                                                const nrv = Math.round(recepie[recepie.chosenVariant.toLowerCase()] / recepie.nrv * 100) / 100
+                                                                return <div key={`image-${__index}`} className="image_prev_row">
+                                                                    <div className="image_prev_col">
+                                                                        {recepie.title}
+                                                                    </div>
+                                                                    <div className="image_prev_col">
+                                                                        {recepie[recepie.chosenVariant.toLowerCase()]} {recepie.unit}
+                                                                    </div>
+                                                                    <div className="image_prev_col">
+                                                                        {/* {nrv  > 1 && '>' } */}
+                                                                        {nrv * 100}% 
+                                                                    </div>
+                                                                </div>
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                    <div className="image_prev_grid_col">
+                                                        <div className="image_prev_grid_col_recepie">
+                                                            <p>
+                                                                <b>
+                                                                    Recommended Daily Intake:
+                                                                </b>
+                                                                1 capsule with food. Do not exceed the recommended daily intake
+                                                                {/* 1 capsule with food. Do not exceed the recommended dail y intake */}
+                                                            </p>
+
+                                                            <p>
+                                                                <b>
+                                                                    Suitable for vegetarians.
+                                                                </b>
+                                                            </p>
+
+                                                            <p>
+                                                                <b>
+                                                                    Food supplements must not be used as a substitute for a varied, balanced diet and a healthy lifestyle.
+                                                                </b>
+                                                            </p>
+
+                                                            <p>
+                                                                <b>
+                                                                    Store in a cool dry place away from direct heat. KEEP OUT OF REACH OF CHILDREN
+                                                                </b>
+                                                            </p>
+                                                            
+                                                            <div className="">
+                                                                <p>
+                                                                    <b>Best before:</b> <RenderDate selectedDates={selectedDates} rangeValue={Number(rangeValue)} />
+                                                                    {/* {`${day}.${month}.${year}` } */}
+                                                                </p>
+                                                                {/* <p>
+                                                                    {`${day}.${month}.${year}` }
+                                                                </p> */}
+                                                                <br />
+                                                                <p>
+                                                                    <b>Recipe ID:</b> {param.id}
+                                                                </p>
+                                                            </div>
+                                                            <p>
+                                                                <b> 
+                                                                {/* {customer.addresses[0]} */}
+                                                                bloonce UG 
+                                                                <br />
+                                                                Kapellenstr. 5053332 Bornheim, Germany
+                                                                </b>
+                                                            </p>
+
+                                                        
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div className="image_prev_grid" style={{marginTop:'auto'}}>
+                                                    <div className="image_prev_grid_col">
+                                                        *NRV means Nutrient Reference Value 
+                                                        <br />
+                                                        <b>
+                                                            30 capsules
                                                         </b>
                                                     </div>
-                                                </div>
-                                                <div className="image_prev_grid_col">
-                                                    <div className="image_prev_title rightAlign">
-                                                        <b>
-                                                            Food Supplement
-                                                        </b>
+                                                    <div className="image_prev_grid_col">
+                                                        <b style={{marginTop:'auto'}}>
+                                                            Made in Germany
+                                                        </b>  
                                                     </div>
                                                 </div>
-                                                <div className="image_prev_grid_col_full" >
-                                                    <b>
-                                                        Ingredients 
-                                                    </b> 
-                                                    <p style={{whiteSpace: 'pre-wrap'}}>
-                                                        {prevRecepies.filter((recepie, __index) => {
-                                                            if(recepie.chosenVariant === '-'){
-                                                                return false
-                                                            }
-                                                            return true
-                                                        }).map(recepie => {
-                                                            return recepie.ingredientName
-                                                        }).toString().replaceAll(',', ", ")}
-                                                        , Hydroxypropylmethylcellulose (HPMC-Capsule), Maltodextrin
-                                                        {/* {textareaValue} */}
-                                                    </p>
-                                                    {/* Vitamin B6, Vitamin B9, Vitamin B12, Vitamin C, Vitamin D, Calciumcarbonate, Ironbisgl ycinate, Selenmethionine, Zincbisgl ycinate, Hydroxy prop y lmeth y lcellulose (HPMC-Capsule) */}
-                                                </div>
-                                                <div className="image_prev_grid_col">
-                                                    <div className="image_prev_table">
-                                                        <div  className="image_prev_row image_prev_row_head">
-                                                            <div className="image_prev_col">
-                                                                1 capsule (daily dose) provides
-                                                            </div>
-                                                            <div className="image_prev_col">
-                                                                {/* %NRV* */}
-                                                            </div>
-                                                            <div className="image_prev_col">
-                                                                %NRV*
-                                                            </div>
-                                                        </div>
-                                                        {prevRecepies.filter(recepie => {
-                                                            if(recepie.chosenVariant === '-' || recepie[recepie.chosenVariant.toLowerCase()] === 0) return false;
-                                                            return true;
-                                                        })?.map((recepie, __index) => {
-                                                            const nrv = Math.round(recepie[recepie.chosenVariant.toLowerCase()] / recepie.nrv * 100) / 100
-                                                            return <div key={`image-${__index}`} className="image_prev_row">
-                                                                <div className="image_prev_col">
-                                                                    {recepie.title}
-                                                                </div>
-                                                                <div className="image_prev_col">
-                                                                    {recepie[recepie.chosenVariant.toLowerCase()]} {recepie.unit}
-                                                                </div>
-                                                                <div className="image_prev_col">
-                                                                    {/* {nrv  > 1 && '>' } */}
-                                                                    {nrv * 100}% 
-                                                                </div>
-                                                            </div>
-                                                        })}
-                                                    </div>
-                                                </div>
-                                                <div className="image_prev_grid_col">
-                                                    <div className="image_prev_grid_col_recepie">
-                                                        <p>
-                                                            <b>
-                                                                Recommended Daily Intake:
-                                                            </b>
-                                                            1 capsule with food. Do not exceed the recommended daily intake
-                                                            {/* 1 capsule with food. Do not exceed the recommended dail y intake */}
-                                                        </p>
-
-                                                        <p>
-                                                            <b>
-                                                                Suitable for vegetarians.
-                                                            </b>
-                                                        </p>
-
-                                                        <p>
-                                                            <b>
-                                                                Food supplements must not be used as a substitute for a varied, balanced diet and a healthy lifestyle.
-                                                            </b>
-                                                        </p>
-
-                                                        <p>
-                                                            <b>
-                                                                Store in a cool dry place away from direct heat. KEEP OUT OF REACH OF CHILDREN
-                                                            </b>
-                                                        </p>
-                                                        
-                                                        <div className="">
-                                                            <p>
-                                                                <b>Best before:</b> <RenderDate selectedDates={selectedDates} rangeValue={Number(rangeValue)} />
-                                                                 {/* {`${day}.${month}.${year}` } */}
-                                                            </p>
-                                                            {/* <p>
-                                                                {`${day}.${month}.${year}` }
-                                                            </p> */}
-                                                            <br />
-                                                            <p>
-                                                                <b>Recipe ID:</b> {param.id}
-                                                            </p>
-                                                        </div>
-                                                        <p>
-                                                            <b> 
-                                                            {/* {customer.addresses[0]} */}
-                                                            bloonce UG 
-                                                            <br />
-                                                            Kapellenstr. 5053332 Bornheim, Germany
-                                                            </b>
-                                                        </p>
-
-                                                       
-                                                        
-                                                    </div>
-                                                </div>
-                                                <div className="image_prev_grid_col">
-                                                    *NRV means Nutrient Reference Value 
-                                                    <br />
-                                                    <b>
-                                                        30 capsules
-                                                    </b>
-                                                </div>
-                                                <div className="image_prev_grid_col">
-                                                    <b>
-                                                        Made in Germany
-                                                    </b>  
-                                                </div>
+                                                
                                             </div>
-                                            
                                         </div>
                                     </div>
                                 </div>
