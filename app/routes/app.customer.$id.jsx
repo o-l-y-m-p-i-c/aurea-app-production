@@ -1030,8 +1030,8 @@ export default function UserPage(){
                                                             30 capsules
                                                         </b>
                                                     </div>
-                                                    <div className="image_prev_grid_col">
-                                                        <b style={{marginTop:'auto'}}>
+                                                    <div className="image_prev_grid_col" style={{marginTop:'auto'}}>
+                                                        <b>
                                                             Made in Germany
                                                         </b>  
                                                     </div>
