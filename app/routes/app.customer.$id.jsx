@@ -960,7 +960,7 @@ export default function UserPage(){
                                                                     </div>
                                                                     <div className="image_prev_col">
                                                                         {/* {nrv  > 1 && '>' } */}
-                                                                        {nrv * 100}% 
+                                                                        {(nrv * 100).toFixed(0)}% 
                                                                     </div>
                                                                 </div>
                                                             })}
