@@ -248,11 +248,11 @@ export default function Customers() {
         >
           {customer[0]}
         </Link>,
-         <Link
-         to={`/app/customer/${customer[1]}`}
-       >
-         {customer[1]}
-       </Link>,
+        <Link
+          to={`/app/customer/${customer[1]}`}
+        >
+          {customer[1]}
+        </Link>,
         customer[2],
         customer[3],
         customer[4]  
@@ -262,10 +262,9 @@ export default function Customers() {
 
     if(value.length > 0){
       rows = sortedCustomers.filter((customer) => {
-        // return customer
-        const lowerCasedFirstName = customer[0].toLowerCase();
+        const lowerCasedFirstName = customer[0] ? customer[0].toLowerCase() : "";
         const lowerCasedIntup = value.toLowerCase();
-        const lowerCasedEmail = customer[2].toLowerCase();
+        const lowerCasedEmail = customer[2] ? customer[2].toLowerCase() : ""; 
         if(lowerCasedFirstName.includes(lowerCasedIntup)){
           return customer
         }
@@ -280,7 +279,11 @@ export default function Customers() {
           >
             {customer[0]}
           </Link>,
-          customer[1],
+           <Link
+              to={`/app/customer/${customer[1]}`}
+            >
+              {customer[1]}
+            </Link>,
           customer[2],
           customer[3],
           customer[4] 
