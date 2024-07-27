@@ -571,7 +571,7 @@ export default function UserPage(){
 
     if(usePDF){
         const { toPDF, targetRef } = usePDF({
-            filename: 'page.pdf',
+            filename: `${param.id}.pdf`,
             page:{
                 format : 'A6',
                 orientation : 'landscape',
