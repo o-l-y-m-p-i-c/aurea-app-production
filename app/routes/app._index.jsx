@@ -33,7 +33,8 @@ export const loader = async ({ request }) => {
             email,
             metafield(namespace: "custom", key: "test_status") {
               value
-            }
+            },
+            updatedAt
           }
         }
       }
@@ -64,6 +65,7 @@ export const loader = async ({ request }) => {
               metafield(namespace: "custom", key: "test_status") {
                 value
               }
+              updatedAt
             }
           }
           pageInfo {
@@ -224,22 +226,57 @@ export default function Customers() {
         node.id.replace('gid://shopify/Customer/', ''),
         node.email,
         node.note !== "" && node.note ? "Passed" : "-" ,
-        node?.metafield && (node?.metafield.value.toLowerCase() === 'updated' || node?.metafield.value.toLowerCase() === 'new') ? node?.metafield.value : (node.note !== "" && node.note) ? 'Success' : '-'
+        node?.metafield && (node?.metafield.value.toLowerCase() === 'updated' || node?.metafield.value.toLowerCase() === 'new') ? node?.metafield.value : (node.note !== "" && node.note) ? 'Success' : '-',
+        node.updatedAt
       ]
     })
 
-    const sortedCustomers = allCustomers.sort((a, b) => {
-      const aMetafield = a[4];
-      const bMetafield = b[4];
-      
+
+    let newCustomers = []
+    let successCustomers = []
+
+    allCustomers.forEach(_customer => {
+      const aMetafield = _customer[4];
+
       if (aMetafield.toLowerCase() === 'new' || aMetafield.toLowerCase() === 'updated') {
-        return -1;
+        newCustomers.push(_customer)
+      }else{
+        successCustomers.push(_customer)
       }
-      if (bMetafield.toLowerCase() === 'new' || bMetafield.toLowerCase() === 'updated') {
-        return 1;
-      }
-      return 0;
-    });
+    })
+
+
+    newCustomers = newCustomers.sort((a, b) => {
+      const aUpdatedAt = new Date(a[5]);
+      const bUpdatedAt = new Date(b[5]);
+
+      console.log(aUpdatedAt)
+
+      return bUpdatedAt <= aUpdatedAt; // Descending order
+    })
+
+    successCustomers = successCustomers.sort((a, b) => {
+      const aUpdatedAt = new Date(a[5]).getTime();
+      const bUpdatedAt = new Date(b[5]).getTime();
+
+      return bUpdatedAt <= aUpdatedAt;  // Descending order
+    })
+
+
+    const sortedCustomers = [].concat(successCustomers).concat(newCustomers)
+
+    // const sortedCustomers = allCustomers.sort((a, b) => {
+    //   const aMetafield = a[4];
+    //   const bMetafield = b[4];
+      
+    //   if (aMetafield.toLowerCase() === 'new' || aMetafield.toLowerCase() === 'updated') {
+    //     return 1;
+    //   }
+    //   if (bMetafield.toLowerCase() === 'new' || bMetafield.toLowerCase() === 'updated') {
+    //     return -1;
+    //   }
+    //   return 0;
+    // });
 
     rows = sortedCustomers.map((customer) => {
       return [
@@ -255,9 +292,10 @@ export default function Customers() {
         </Link>,
         customer[2],
         customer[3],
-        customer[4]  
+        customer[4],
+        // customer[5],  
       ]
-    }).reverse()
+    })
 
 
     if(value.length > 0){
@@ -288,7 +326,7 @@ export default function Customers() {
           customer[3],
           customer[4] 
         ]
-      }).reverse()
+      })
     }
 
 
