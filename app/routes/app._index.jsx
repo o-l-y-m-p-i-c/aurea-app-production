@@ -19,33 +19,139 @@ import { CustomerList } from "../components/CustomerList";
 
 export const loader = async ({ request }) => {
   const { admin } = await authenticate.admin(request);
-  
 
-  const response2 = await admin.graphql(
+  // const response2 = await admin.graphql(
+  //   `#graphql
+  //   query {
+  //     customers(first : 250) {
+  //       edges {
+  //         node {
+  //           id,
+  //           note,
+  //           firstName,
+  //           email,
+  //           metafield(namespace: "custom", key: "test_status") {
+  //             value
+  //           },
+  //           updatedAt
+  //         }
+  //       }
+  //     }
+  //   }`,
+  // );
+
+  // const response3 = await admin.graphql(
+  //   `#graphql
+  //     query {
+  //       orders(first:100) {
+  //         nodes {
+  //           id
+  //           name
+  //           displayFulfillmentStatus
+  //         }
+  //       }
+  //     }`,
+  // );
+
+  const response3 = await admin.graphql(
     `#graphql
-    query {
-      customers(first : 250) {
-        edges {
-          node {
-            id,
-            note,
-            firstName,
-            email,
-            metafield(namespace: "custom", key: "test_status") {
-              value
-            },
+      query {
+        orders(first: 100) {
+          nodes {
+            id
+            name
+            createdAt
             updatedAt
+            customer {
+              id
+              note
+              firstName
+              email
+              metafield(namespace: "custom", key: "test_status") {
+                value
+              }
+              updatedAt
+            }
+            email
+            displayFulfillmentStatus
+            totalPriceSet {
+              shopMoney {
+                amount
+                currencyCode
+              }
+            }
+            subtotalPriceSet {
+              shopMoney {
+                amount
+                currencyCode
+              }
+            }
+            totalShippingPriceSet {
+              shopMoney {
+                amount
+                currencyCode
+              }
+            }
+            totalTaxSet {
+              shopMoney {
+                amount
+                currencyCode
+              }
+            }
+            totalRefundedSet {
+              shopMoney {
+                amount
+                currencyCode
+              }
+            }
+            
+            shippingAddress {
+              address1
+              address2
+              city
+              province
+              country
+              zip
+            }
+            billingAddress {
+              address1
+              address2
+              city
+              province
+              country
+              zip
+            }
+            fulfillments {
+              id
+              status
+              trackingInfo {
+                number
+                url
+              }
+            }
+            transactions {
+              id
+              amountSet {
+                shopMoney {
+                  amount
+                  currencyCode
+                }
+              }
+              gateway
+              status
+              createdAt
+            }
           }
         }
-      }
-    }`,
+      }`,
   );
 
-  const {data} = await response2.json();
+  const orderArr = await response3.json();
+  const { orders } = orderArr.data;
 
+  // console.log(data);
 
   // ----------------------------------------------------------------
-
 
   let allCustomers = [];
   let hasNextPage = true;
@@ -81,7 +187,7 @@ export const loader = async ({ request }) => {
           first: 250,
           after: endCursor,
         },
-      }
+      },
     );
 
     let hhh = await response.json();
@@ -90,12 +196,15 @@ export const loader = async ({ request }) => {
     endCursor = hhh.data.customers.pageInfo.endCursor;
   }
 
+  const sortedCustomers = allCustomers.sort((a, b) => {
+    return new Date(b.node.updatedAt) - new Date(a.node.updatedAt);
+  });
+
   return {
-    customers : allCustomers,
-    process: json({ ENV: { VARIABLE: process.env.VARIABLE } })
-
-  }
-
+    customers: sortedCustomers,
+    orders: orders?.nodes,
+    process: json({ ENV: { VARIABLE: process.env.VARIABLE } }),
+  };
 };
 
 export const links = () => [
