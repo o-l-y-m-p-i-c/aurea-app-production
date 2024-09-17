@@ -15,7 +15,7 @@ import {
   Text,
 } from "@shopify/polaris";
 import html2canvas from "html2canvas";
-
+import { json } from "@remix-run/node";
 // import jsPDF from "jspdf";
 import _ from "lodash";
 import { useCallback, useEffect } from "react";
@@ -68,7 +68,9 @@ export const loader = async ({ request }) => {
   const url = new URL(request.url);
   const path = url.pathname;
   let id = path.split("/");
-  id = id[id.length - 1];
+  const orderId = id[id.length - 1];
+  id = id[id.length - 2];
+
   // console.log('Current path:', id);
 
   const response = await admin.graphql(
@@ -109,9 +111,139 @@ export const loader = async ({ request }) => {
     }`,
   );
 
+  const response2 = await admin.graphql(`#graphql
+    query {
+        order1: order(id: "gid://shopify/Order/${orderId}") {
+            id
+      name
+      createdAt
+      updatedAt
+      customer {
+        id
+        firstName
+        lastName
+        email
+        phone
+      }
+      email
+      phone
+      displayFulfillmentStatus
+      totalPriceSet {
+        shopMoney {
+          amount
+          currencyCode
+        }
+      }
+      subtotalPriceSet {
+        shopMoney {
+          amount
+          currencyCode
+        }
+      }
+      totalShippingPriceSet {
+        shopMoney {
+          amount
+          currencyCode
+        }
+      }
+      totalTaxSet {
+        shopMoney {
+          amount
+          currencyCode
+        }
+      }
+      totalRefundedSet {
+        shopMoney {
+          amount
+          currencyCode
+        }
+      }
+      lineItems(first: 100) {
+        edges {
+          node {
+            id
+            title
+            quantity
+            
+            totalDiscountSet {
+              shopMoney {
+                amount
+                currencyCode
+              }
+            }
+          }
+        }
+      }
+      shippingAddress {
+        address1
+        address2
+        city
+        province
+        country
+        zip
+      }
+      billingAddress {
+        address1
+        address2
+        city
+        province
+        country
+        zip
+      }
+      fulfillments {
+        id
+        status
+        trackingInfo {
+          number
+          url
+        }
+        createdAt
+        updatedAt
+      }
+      transactions {
+        id
+        amountSet {
+          shopMoney {
+            amount
+            currencyCode
+          }
+        }
+        gateway
+        status
+        createdAt
+      }
+        }
+  }`);
+
+  const response3 = await fetch(
+    `https://e7098f-02.myshopify.com/admin/api/2023-07/orders/${orderId}.json`,
+    {
+      headers: {
+        "X-Shopify-Access-Token": process.env.SHOPIFY_API_TOKEN,
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
   const { data } = await response.json();
 
-  return { data, id };
+  const orderInfo = await response2.json();
+
+  const orderInfo2 = await response3.json();
+
+  const orderData = orderInfo.data;
+
+  console.log(orderInfo2.data);
+
+  return {
+    data,
+    order: orderData?.order1,
+    id,
+    order2: orderInfo2.order,
+    process: json({
+      ENV: { SHOPIFY_API_SECRET: process.env.SHOPIFY_API_SECRET },
+    }),
+  };
 };
 
 export const action = async ({ request }) => {
@@ -145,13 +277,13 @@ export const action = async ({ request }) => {
     }
   }
 
-  console.log("metafields", metafields);
+  //   console.log("metafields", metafields);
 
   try {
     await updateCustomerMetafields(metafields, admin);
     return "ok";
   } catch (error) {
-    console.log("error", error.body.errors.graphQLErrors);
+    // console.log("error", error.body.errors.graphQLErrors);
     return "bad";
   }
 };
@@ -177,10 +309,15 @@ export default function UserPage() {
 
   const [rangeValue, setRangeValue] = useState(40);
 
+  const [isOldVersion, setIsOldVersion] = useState(false);
+
   const {
     data: { customer },
     id,
+    order2,
   } = loadedData;
+
+  console.log("orderInfo", order2);
 
   const { note } = customer;
 
@@ -637,7 +774,47 @@ export default function UserPage() {
             </Layout.Section>
             <Layout.Section>
               <Card>
-                <h2 className="h2">Quiz Answers</h2>
+                <h2 className="h2">Answers </h2>
+                <button
+                  style={{
+                    marginTop: 15,
+                    padding: "5px 10px",
+                    borderRadius: 10,
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                  }}
+                  className="recepies-btn-export"
+                  onClick={() => {
+                    setIsOldVersion((prev) => !prev);
+                  }}
+                >
+                  {!isOldVersion ? "Show old version" : "Hide old version"}
+                </button>
+                <div
+                  style={{
+                    marginTop: 15,
+                    fontSize: 15,
+                    fontWeight: "bold",
+                  }}
+                >
+                  <h3
+                    style={{
+                      display: "inline",
+                    }}
+                  >
+                    Order:
+                  </h3>{" "}
+                  <a
+                    style={{
+                      display: "inline",
+                      color: "rgb(126, 178, 142)",
+                    }}
+                    target="_blank"
+                    href={`https://admin.shopify.com/store/e7098f-02/orders/${order2.id}`}
+                  >
+                    {order2.id}
+                  </a>
+                </div>
                 <div className="anserws-grid">
                   {/* {questions.map((question, index) => {
                                     return <div className="question" key={`question-${index}`}>
@@ -655,68 +832,134 @@ export default function UserPage() {
                                 
                                     </div>
                                 })} */}
-                  {console.log(parsedNotes)}
-                  {parsedNotes.map((note, index) => {
-                    return (
-                      <>
-                        <div className="question" key={`question2-${index}`}>
-                          <div className="question-title">{note.question}</div>
-                          <div className="question-anserws">
-                            {note.questionType == "radio" &&
-                              note.asnerwValues.map((value, _index) => (
-                                <button
-                                  disabled
-                                  key={`question-anserw-${index}-${_index}`}
-                                  className={`anserw ${value == note.answer ? "hello" : "hidden"}`}
-                                >
-                                  {value}
-                                </button>
-                              ))}
-                            {(note.questionType == "text" ||
-                              note.questionType == "number") && (
-                              <button
-                                disabled
-                                key={`question-anserw-${1}-${1}`}
-                                className={`anserw ${true == true ? "hello" : "hidden"}`}
-                              >
-                                {note.answer}
-                              </button>
-                            )}
-                            {note.questionType == "checkbox" &&
-                              note.asnerwValues.map((value, _index) => {
-                                for (
-                                  let i = 0;
-                                  i < JSON.parse(note.answer).length;
-                                  i++
-                                ) {
-                                  const element = JSON.parse(note.answer)[i];
-                                  if (element === value) {
-                                    return (
-                                      <button
-                                        disabled
-                                        key={`question-anserw-${index}-${_index}`}
-                                        className={`anserw hello`}
-                                      >
-                                        {value}
-                                      </button>
-                                    );
-                                  }
-                                }
-                                return (
+                  {isOldVersion &&
+                    parsedNotes.map((note, index) => {
+                      return (
+                        <>
+                          <div className="question" key={`question2-${index}`}>
+                            <div className="question-title">
+                              {note.question}
+                            </div>
+                            <div className="question-anserws">
+                              {note.questionType == "radio" &&
+                                note.asnerwValues.map((value, _index) => (
                                   <button
                                     disabled
                                     key={`question-anserw-${index}-${_index}`}
-                                    className={`anserw hidden`}
+                                    className={`anserw ${value == note.answer ? "hello" : "hidden"}`}
                                   >
                                     {value}
                                   </button>
+                                ))}
+                              {(note.questionType == "text" ||
+                                note.questionType == "number") && (
+                                <button
+                                  disabled
+                                  key={`question-anserw-${1}-${1}`}
+                                  className={`anserw ${true == true ? "hello" : "hidden"}`}
+                                >
+                                  {note.answer}
+                                </button>
+                              )}
+                              {note.questionType == "checkbox" &&
+                                note.asnerwValues.map((value, _index) => {
+                                  for (
+                                    let i = 0;
+                                    i < JSON.parse(note.answer).length;
+                                    i++
+                                  ) {
+                                    const element = JSON.parse(note.answer)[i];
+                                    if (element === value) {
+                                      return (
+                                        <button
+                                          disabled
+                                          key={`question-anserw-${index}-${_index}`}
+                                          className={`anserw hello`}
+                                        >
+                                          {value}
+                                        </button>
+                                      );
+                                    }
+                                  }
+                                  return (
+                                    <button
+                                      disabled
+                                      key={`question-anserw-${index}-${_index}`}
+                                      className={`anserw hidden`}
+                                    >
+                                      {value}
+                                    </button>
+                                  );
+                                })}
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })}
+
+                  <ul
+                    style={{
+                      margin: 0,
+                      gridColumn: "1 / 3",
+                      padding: "0 15px",
+                    }}
+                  >
+                    {!isOldVersion &&
+                      order2.line_items.map((product) => {
+                        return (
+                          <li>
+                            <h2
+                              style={{
+                                fontWeight: 700,
+                                fontSize: 17,
+                                paddingBottom: 10,
+                                marginBottom: 0,
+                                borderBottom: "2px solid black",
+                              }}
+                            >
+                              {product.name}
+                            </h2>
+                            <ul
+                              style={{
+                                display: "grid",
+                                gridTemplateColumns: "1fr 1fr",
+                                padding: 0,
+                              }}
+                            >
+                              {product.properties.map((property) => {
+                                return (
+                                  // eslint-disable-next-line react/jsx-key
+                                  <li
+                                    style={{
+                                      listStyle: "none",
+                                      marginBottom: 10,
+                                      marginTop: 10,
+                                    }}
+                                  >
+                                    <div>
+                                      <h3
+                                        style={{
+                                          fontSize: 15,
+                                        }}
+                                      >
+                                        <b>{property.name}:</b>
+                                      </h3>
+                                      <div
+                                        style={{
+                                          paddingTop: 10,
+                                        }}
+                                      >
+                                        {property.value}
+                                      </div>
+                                    </div>
+                                  </li>
                                 );
                               })}
-                          </div>
-                        </div>
-                      </>
-                    );
-                  })}
+                            </ul>
+                          </li>
+                        );
+                      })}
+                  </ul>
                 </div>
               </Card>
             </Layout.Section>
@@ -975,7 +1218,12 @@ export default function UserPage() {
                               <p style={{ whiteSpace: "pre-wrap" }}>
                                 {prevRecepies
                                   .filter((recepie, __index) => {
-                                    if (recepie.chosenVariant === "-") {
+                                    if (
+                                      recepie.chosenVariant === "-" ||
+                                      recepie[
+                                        recepie.chosenVariant.toLowerCase()
+                                      ] === 0
+                                    ) {
                                       return false;
                                     }
                                     return true;
