@@ -216,7 +216,7 @@ export const loader = async ({ request }) => {
   }`);
 
   const response3 = await fetch(
-    `https://e7098f-02.myshopify.com/admin/api/2023-07/orders/${orderId}.json`,
+    `https://e7098f-02.myshopify.com/admin/api/2024-04/orders/${orderId}.json`,
     {
       headers: {
         "X-Shopify-Access-Token": process.env.SHOPIFY_API_TOKEN,
