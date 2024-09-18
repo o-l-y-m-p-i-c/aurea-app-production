@@ -31,32 +31,235 @@ import * as pkg from "react-to-pdf";
 
 import styles from "./styles.css?url";
 
-const updateCustomerMetafields = async (metafields, admin) => {
+const recepiesBtns = [
+  {
+    title: "-",
+  },
+  {
+    title: "Min",
+  },
+  {
+    title: "Med",
+  },
+  {
+    title: "Max",
+  },
+];
+
+let defaultRecepies = [
+  {
+    id: "",
+    title: "B6 Р5Р",
+    key: "b6_5_",
+    btns: recepiesBtns,
+    chosenVariant: "-",
+    namespace: "custom",
+    ingredientName: "Vitamin B6",
+    nrv: 1.4,
+    min: 1.4,
+    med: 1.6,
+    max: 4,
+    unit: "mg",
+  },
+  {
+    id: "",
+    title: "B9 Folic Acid",
+    key: "b9_folic_acid",
+    btns: recepiesBtns,
+    chosenVariant: "-",
+    namespace: "custom",
+    ingredientName: "Vitamin B9",
+    nrv: 200,
+    min: 100,
+    med: 200,
+    max: 400,
+    unit: "μg",
+  },
+  {
+    id: "",
+    title: "B12 Methylcobalamine",
+    key: "b12_methylcobalamine",
+    ingredientName: "Vitamin B12",
+    btns: recepiesBtns,
+    chosenVariant: "-",
+    namespace: "custom",
+    nrv: 2.5,
+    min: 5,
+    med: 25,
+    max: 100,
+    unit: "μg",
+  },
+  {
+    id: "",
+    title: "Vitamin C Ascorbic Acid",
+    ingredientName: "Vitamin C",
+    key: "vitamin_c_ascorbic_acid",
+    btns: recepiesBtns,
+    chosenVariant: "-",
+    namespace: "custom",
+    nrv: 80,
+    min: 20,
+    med: 40,
+    max: 80,
+    unit: "mg",
+  },
+  {
+    id: "",
+    title: "Vitamin D3 Cholecalciferol",
+    key: "vitamin_d3_cholecalciferol",
+    ingredientName: "Vitamin D",
+    btns: recepiesBtns,
+    chosenVariant: "-",
+    namespace: "custom",
+    nrv: 5,
+    min: 10,
+    med: 15,
+    max: 20,
+    unit: "μg",
+  },
+  {
+    id: "",
+    title: "Calcium Carbonate",
+    ingredientName: "Calcium Carbonate",
+    key: "calcium_carbonate",
+    btns: recepiesBtns,
+    chosenVariant: "-",
+    namespace: "custom",
+    nrv: 800,
+    min: 0,
+    med: 150,
+    max: 500,
+    unit: "mg",
+  },
+  {
+    id: "",
+    title: "Iron Bisglycinate",
+    key: "iron_bisglycinate",
+    ingredientName: "Iron Bisglycinate",
+    btns: recepiesBtns,
+    chosenVariant: "-",
+    namespace: "custom",
+    nrv: 14,
+    min: 5,
+    med: 10,
+    max: 14,
+    unit: "mg",
+  },
+  {
+    id: "",
+    title: "Magnesium Bisglycinate",
+    key: "magnesium_bisglycinate",
+    ingredientName: "Magnesium Bisglycinate",
+    btns: recepiesBtns,
+    chosenVariant: "-",
+    namespace: "custom",
+    nrv: 375,
+    min: 57,
+    med: 75,
+    max: 100,
+    unit: "mg",
+  },
+  {
+    id: "",
+    title: "Selenomethionine",
+    key: "selenomethionine",
+    ingredientName: "Selenmethionine",
+    btns: recepiesBtns,
+    chosenVariant: "-",
+    namespace: "custom",
+    nrv: 55,
+    min: 0,
+    med: 0,
+    max: 55,
+    unit: "μg",
+  },
+  {
+    id: "",
+    title: "Zinc Bisglycinate",
+    key: "zinc_bisglycinate",
+    ingredientName: "Zinc Bisglycinate",
+    btns: recepiesBtns,
+    chosenVariant: "-",
+    namespace: "custom",
+    nrv: 10,
+    min: 5,
+    med: 10,
+    max: 15,
+    unit: "mg",
+  },
+];
+
+const updateCustomerMetafields = async (metafields, id, admin) => {
+  // customer mutation
   const response = await admin.graphql(
     `#graphql
-    mutation MetafieldsSet($metafields: [MetafieldsSetInput!]!) {
-      metafieldsSet(metafields: $metafields) {
-        metafields {
-          key
-          namespace
-          value
+    mutation updateCustomerMetafields($input: CustomerInput!) {
+      customerUpdate(input: $input) {
+        customer {
+          id
+          metafields(first: 12) {
+            edges {
+              node {
+                id
+                namespace
+                key
+                value
+              }
+            }
+          }
         }
         userErrors {
-          field
           message
-          code
+          field
         }
       }
     }`,
     {
       variables: {
-        metafields,
+        input: {
+          metafields: metafields,
+          id: id,
+        },
       },
     },
   );
 
-  const data = await response.json();
+  // const response = await admin.graphql(
+  //   `#graphql
+  //   mutation updateOrderMetafields($input: OrderInput!) {
+  //     orderUpdate(input: $input) {
+  //       order {
+  //         id
+  //         metafields(first: 12) {
+  //           edges {
+  //             node {
+  //               id
+  //               namespace
+  //               key
+  //               value
+  //             }
+  //           }
+  //         }
+  //       }
+  //       userErrors {
+  //         message
+  //         field
+  //       }
+  //     }
+  //   }`,
+  //   {
+  //     variables: {
+  //       input: {
+  //         metafields: metafields,
+  //         id: id,
+  //       },
+  //     },
+  //   },
+  // );
 
+  const data = await response.json();
+  // const data2 = await response.json();
+  console.log("data", data.data);
   return data;
 };
 
@@ -233,8 +436,6 @@ export const loader = async ({ request }) => {
 
   const orderData = orderInfo.data;
 
-  console.log(orderInfo2.data);
-
   return {
     data,
     order: orderData?.order1,
@@ -246,44 +447,178 @@ export const loader = async ({ request }) => {
   };
 };
 
+const defaultMetafield = {
+  namespace: null,
+  key: null,
+  type: "single_line_text_field", // Assuming all are single line text fields
+  value: null,
+  ownerId: null,
+};
+
+// const metafieldsKeys = [
+//   "test_status",
+//   "b6_5_",
+//   "b9_folic_acid",
+//   "b12_methylcobalamine",
+//   "vitamin_c_ascorbic_acid",
+
+// ]
+const metafieldsNamespace = "custom";
+const metafieldsDefaultValue = "-";
+
+const createMetafield = ({ namespace, key, value, ownerId }) => {
+  return {
+    namespace,
+    key,
+    type: "single_line_text_field", // Assuming all are single line text fields
+    value: value || "-",
+    ownerId: ownerId,
+  };
+};
+
 export const action = async ({ request }) => {
   const formData = await request.formData();
   const { admin } = await authenticate.admin(request);
   const form_length = [...formData].length - 1 / 3;
   const customerID = formData.get("customerID");
+  // const orderID = formData.get("orderID");
   const metafields = [];
+
+  const existingMetafieldsResponse = await admin.graphql(
+    `#graphql
+    query {
+      customer(id: "${customerID}") {
+        metafields(first: 250, namespace: "custom") {
+          edges {
+            node {
+              id
+              key
+              value
+              namespace
+            }
+          }
+        }
+      }
+    }`,
+  );
+
+  // const existingOrderMetafieldsResponse = await admin.graphql(
+  //   `#graphql
+  //   query {
+  //     order1: order(id: "gid://shopify/Order/${orderID}") {
+  //       metafields(first: 250, namespace: "custom") {
+  //         edges {
+  //           node {
+  //             id
+  //             key
+  //             value
+  //             namespace
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }`,
+  // );
+
+  const data = await existingMetafieldsResponse.json();
+  // const orderData = await existingOrderMetafieldsResponse.json();
+
+  // console.log(
+  //   "existingMetafieldsResponse",
+  //   orderData.data.order1.metafields.edges,
+  // );
+
+  const existingMetafields = data.data.customer.metafields.edges.map(
+    (edge) => edge.node,
+  );
+
+  // const existingOrderMetafields = orderData.data.order1.metafields.edges.map(
+  //   (edge) => edge.node,
+  // );
 
   for (let i = 0; i < form_length - 1; i++) {
     const namespace = formData.get(`namespace${i}`);
     const key = formData.get(`key${i}`);
     const value = formData.get(`value${i}`);
     if (i === 0 && namespace && key && value) {
-      metafields.push({
-        namespace,
-        key: "test_status",
-        type: "single_line_text_field", // Assuming all are single line text fields
-        value: "success",
-        ownerId: customerID,
-      });
+      const existingMetafield = existingMetafields.find(
+        (metafield) => metafield.key === "test_status",
+      );
+
+      if (existingMetafield) {
+        metafields.push({
+          ...existingMetafield,
+          value: "success",
+          // ownerId: customerID,
+        });
+      } else {
+        metafields.push({
+          namespace: "custom",
+          key: "test_status",
+          // type: "single_line_text_field", // Assuming all are single line text fields
+          value: "success",
+          // ownerId: customerID,
+        });
+      }
     }
     if (namespace && key && value) {
-      metafields.push({
-        namespace,
-        key,
-        type: "single_line_text_field", // Assuming all are single line text fields
-        value,
-        ownerId: customerID,
-      });
+      const existingMetafield = existingMetafields.find(
+        (metafield) => metafield.key === key,
+      );
+
+      if (existingMetafield) {
+        metafields.push({
+          ...existingMetafield,
+          value: value || "-",
+        });
+      } else {
+        metafields.push({
+          // id: "gid://shopify/Metafield/147379043467593",
+          namespace: "custom",
+          key,
+          // type: "single_line_text_field", // Assuming all are single line text fields
+          value: value || "-",
+          // ownerId: customerID,
+        });
+      }
     }
   }
 
-  //   console.log("metafields", metafields);
+  // if (metafields.length === 0) {
+  //   for (let i = 0; i < defaultRecepies.length; i++) {
+  //     const defaultRecepie = defaultRecepies[i];
+  //     const form_key = formData.get(`key${i}`);
+  //     const namespace = formData.get(`namespace${i}`);
+  //     const value = formData.get(`value${i}`);
+  //     const { key } = defaultRecepie
+  //     if (i === 0 && namespace && form_key && value) {
+  //       metafields.push({
+  //         namespace,
+  //         key: "test_status",
+  //         type: "single_line_text_field", // Assuming all are single line text fields
+  //         value: "success",
+  //         ownerId: customerID,
+  //       });
+  //     }
+  //     if (namespace && key && value) {
+  //       metafields.push({
+  //         namespace,
+  //         key,
+  //         type: "single_line_text_field", // Assuming all are single line text fields
+  //         value,
+  //         ownerId: customerID,
+  //       });
+  //     }
+
+  //   }
+  // }
+
+  console.log("metafields", metafields);
 
   try {
-    await updateCustomerMetafields(metafields, admin);
+    await updateCustomerMetafields(metafields, customerID, admin);
     return "ok";
   } catch (error) {
-    // console.log("error", error.body.errors.graphQLErrors);
     return "bad";
   }
 };
@@ -317,7 +652,7 @@ export default function UserPage() {
     order2,
   } = loadedData;
 
-  console.log("orderInfo", order2);
+  console.log("customerInfo", customer);
 
   const { note } = customer;
 
@@ -402,164 +737,6 @@ export default function UserPage() {
     {
       question: "How often do you eat milk products?",
       anserws: ["Never", "Sometimes", "Daily"],
-    },
-  ];
-
-  const recepiesBtns = [
-    {
-      title: "-",
-    },
-    {
-      title: "Min",
-    },
-    {
-      title: "Med",
-    },
-    {
-      title: "Max",
-    },
-  ];
-
-  let defaultRecepies = [
-    {
-      id: "",
-      title: "B6 Р5Р",
-      key: "b6_5_",
-      btns: recepiesBtns,
-      chosenVariant: "-",
-      namespace: "default",
-      ingredientName: "Vitamin B6",
-      nrv: 1.4,
-      min: 1.4,
-      med: 1.6,
-      max: 4,
-      unit: "mg",
-    },
-    {
-      id: "",
-      title: "B9 Folic Acid",
-      key: "b9_folic_acid",
-      btns: recepiesBtns,
-      chosenVariant: "-",
-      namespace: "default",
-      ingredientName: "Vitamin B9",
-      nrv: 200,
-      min: 100,
-      med: 200,
-      max: 400,
-      unit: "μg",
-    },
-    {
-      id: "",
-      title: "B12 Methylcobalamine",
-      key: "b12_methylcobalamine",
-      ingredientName: "Vitamin B12",
-      btns: recepiesBtns,
-      chosenVariant: "-",
-      namespace: "default",
-      nrv: 2.5,
-      min: 5,
-      med: 25,
-      max: 100,
-      unit: "μg",
-    },
-    {
-      id: "",
-      title: "Vitamin C Ascorbic Acid",
-      ingredientName: "Vitamin C",
-      key: "vitamin_c_ascorbic_acid",
-      btns: recepiesBtns,
-      chosenVariant: "-",
-      namespace: "default",
-      nrv: 80,
-      min: 20,
-      med: 40,
-      max: 80,
-      unit: "mg",
-    },
-    {
-      id: "",
-      title: "Vitamin D3 Cholecalciferol",
-      key: "vitamin_d3_cholecalciferol",
-      ingredientName: "Vitamin D",
-      btns: recepiesBtns,
-      chosenVariant: "-",
-      namespace: "default",
-      nrv: 5,
-      min: 10,
-      med: 15,
-      max: 20,
-      unit: "μg",
-    },
-    {
-      id: "",
-      title: "Calcium Carbonate",
-      ingredientName: "Calcium Carbonate",
-      key: "calcium_carbonate",
-      btns: recepiesBtns,
-      chosenVariant: "-",
-      namespace: "default",
-      nrv: 800,
-      min: 0,
-      med: 150,
-      max: 500,
-      unit: "mg",
-    },
-    {
-      id: "",
-      title: "Iron Bisglycinate",
-      key: "iron_bisglycinate",
-      ingredientName: "Iron Bisglycinate",
-      btns: recepiesBtns,
-      chosenVariant: "-",
-      namespace: "default",
-      nrv: 14,
-      min: 5,
-      med: 10,
-      max: 14,
-      unit: "mg",
-    },
-    {
-      id: "",
-      title: "Magnesium Bisglycinate",
-      key: "magnesium_bisglycinate",
-      ingredientName: "Magnesium Bisglycinate",
-      btns: recepiesBtns,
-      chosenVariant: "-",
-      namespace: "default",
-      nrv: 375,
-      min: 57,
-      med: 75,
-      max: 100,
-      unit: "mg",
-    },
-    {
-      id: "",
-      title: "Selenomethionine",
-      key: "selenomethionine",
-      ingredientName: "Selenmethionine",
-      btns: recepiesBtns,
-      chosenVariant: "-",
-      namespace: "default",
-      nrv: 55,
-      min: 0,
-      med: 0,
-      max: 55,
-      unit: "μg",
-    },
-    {
-      id: "",
-      title: "Zinc Bisglycinate",
-      key: "zinc_bisglycinate",
-      ingredientName: "Zinc Bisglycinate",
-      btns: recepiesBtns,
-      chosenVariant: "-",
-      namespace: "default",
-      nrv: 10,
-      min: 5,
-      med: 10,
-      max: 15,
-      unit: "mg",
     },
   ];
 
@@ -902,6 +1079,9 @@ export default function UserPage() {
                       margin: 0,
                       gridColumn: "1 / 3",
                       padding: "0 15px",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 20,
                     }}
                   >
                     {!isOldVersion &&
@@ -1097,6 +1277,13 @@ export default function UserPage() {
                       value={customer.id}
                       name={`customerID`}
                     />
+                    {/* <input
+                      disabled
+                      style={{ display: "none" }}
+                      type="text"
+                      value={order2.id}
+                      name={`orderID`}
+                    /> */}
                   </form>
 
                   <div className="recepies-btns">

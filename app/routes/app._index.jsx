@@ -1,29 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { json } from "@remix-run/node";
-import {
-  Link,
-  useActionData,
-  useLoaderData,
-  useNavigate,
-  useNavigation,
-  useParams,
-  useSubmit,
-} from "@remix-run/react";
-import {
-  Page,
-  Layout,
-  BlockStack,
-  LegacyCard,
-  DataTable,
-  Autocomplete,
-  Icon,
-} from "@shopify/polaris";
-import { SearchIcon } from "@shopify/polaris-icons";
+import { Link, useLoaderData } from "@remix-run/react";
+import { Page } from "@shopify/polaris";
 import { TitleBar } from "@shopify/app-bridge-react";
 import { authenticate } from "../shopify.server";
 
 import styles from "./styles.css?url";
-import { Input } from "../components/Input";
 import { CustomerList } from "../components/CustomerList";
 
 const formatter = new Intl.DateTimeFormat("en-US", {
@@ -68,105 +50,52 @@ export const loader = async ({ request }) => {
   //     }`,
   // );
 
-  const response3 = await admin.graphql(
-    `#graphql
-      query {
-        orders(first: 100) {
-          nodes {
-            id
-            name
-            createdAt
-            updatedAt
-            customer {
+  let allOrders = [];
+  let hasNextOrderPage = true;
+  let endOrderCursor = null;
+
+  while (hasNextOrderPage) {
+    const response4 = await admin.graphql(
+      `#graphql
+        query($first: Int!, $after: String) {
+          orders(first: $first, after: $after) {
+            nodes {
               id
-              note
-              firstName
-              email
-              metafield(namespace: "custom", key: "test_status") {
-                value
-              }
+              name
+              createdAt
               updatedAt
-            }
-            email
-            displayFulfillmentStatus
-            totalPriceSet {
-              shopMoney {
-                amount
-                currencyCode
-              }
-            }
-            subtotalPriceSet {
-              shopMoney {
-                amount
-                currencyCode
-              }
-            }
-            totalShippingPriceSet {
-              shopMoney {
-                amount
-                currencyCode
-              }
-            }
-            totalTaxSet {
-              shopMoney {
-                amount
-                currencyCode
-              }
-            }
-            totalRefundedSet {
-              shopMoney {
-                amount
-                currencyCode
-              }
-            }
-            
-            shippingAddress {
-              address1
-              address2
-              city
-              province
-              country
-              zip
-            }
-            billingAddress {
-              address1
-              address2
-              city
-              province
-              country
-              zip
-            }
-            fulfillments {
-              id
-              status
-              trackingInfo {
-                number
-                url
-              }
-            }
-            transactions {
-              id
-              amountSet {
-                shopMoney {
-                  amount
-                  currencyCode
+              customer {
+                id
+                firstName
+                email
+                metafield(namespace: "custom", key: "test_status") {
+                  value
                 }
               }
-              gateway
-              status
-              createdAt
+              email
+              displayFulfillmentStatus
+            }
+            pageInfo {
+              hasPreviousPage
+              hasNextPage
+              endCursor
+              startCursor
             }
           }
-        }
-      }`,
-  );
+        }`,
+      {
+        variables: {
+          first: 250,
+          after: endOrderCursor,
+        },
+      },
+    );
+    let response4_data = await response4.json();
 
-  const orderArr = await response3.json();
-  const { orders } = orderArr.data;
-
-  // console.log(data);
-
-  // ----------------------------------------------------------------
+    allOrders = allOrders.concat(response4_data.data.orders.nodes);
+    hasNextOrderPage = response4_data.data.orders.pageInfo?.hasNextPage;
+    endOrderCursor = response4_data.data.orders.pageInfo.endCursor;
+  }
 
   let allCustomers = [];
   let hasNextPage = true;
@@ -205,11 +134,13 @@ export const loader = async ({ request }) => {
       },
     );
 
-    let hhh = await response.json();
-    allCustomers = allCustomers.concat(hhh.data.customers.edges);
-    hasNextPage = hhh.data.customers.pageInfo.hasNextPage;
-    endCursor = hhh.data.customers.pageInfo.endCursor;
+    let response_data = await response.json();
+    allCustomers = allCustomers.concat(response_data.data.customers.edges);
+    hasNextPage = response_data.data.customers.pageInfo.hasNextPage;
+    endCursor = response_data.data.customers.pageInfo.endCursor;
   }
+
+  console.log("orders?.nodes", allOrders, allOrders.length);
 
   const sortedCustomers = allCustomers.sort((a, b) => {
     return new Date(b.node.updatedAt) - new Date(a.node.updatedAt);
@@ -217,7 +148,7 @@ export const loader = async ({ request }) => {
 
   return {
     customers: sortedCustomers,
-    orders: orders?.nodes,
+    orders: allOrders,
     process: json({ ENV: { VARIABLE: process.env.VARIABLE } }),
   };
 };
@@ -429,12 +360,12 @@ export default function Customers() {
 
   function setMergedTable2(value = "", array = []) {
     let rows = [];
-    console.log("asda", array);
+    // console.log("asda", array);
 
     // return rows;
 
     const allCustomers = array.map(
-      ({ customer, id, displayFulfillmentStatus,name, createdAt }) => {
+      ({ customer, id, displayFulfillmentStatus, name, createdAt }) => {
         return [
           customer.firstName,
           customer.id.replace("gid://shopify/Customer/", ""),
@@ -451,7 +382,7 @@ export default function Customers() {
           id,
           displayFulfillmentStatus,
           createdAt,
-          name
+          name,
         ];
       },
     );
@@ -488,7 +419,7 @@ export default function Customers() {
 
     const sortedCustomers = [].concat(successCustomers).concat(newCustomers);
 
-    rows = sortedCustomers.map((customer) => {
+    rows = allCustomers.map((customer) => {
       return [
         <Link
           to={`/app/customer-plan-b/${customer[1]}/${customer[6].replace("gid://shopify/Order/", "")}`}
@@ -502,7 +433,7 @@ export default function Customers() {
         customer[9],
         customer[2],
         // customer[3],
-        customer[4],
+        // customer[4],
         customer[7],
         customer[8].split("T")[0].replaceAll("-", "."),
         // .replace("T", " ").replace("Z", ""),
@@ -510,7 +441,7 @@ export default function Customers() {
     });
 
     if (value.length > 0) {
-      rows = sortedCustomers
+      rows = allCustomers
         .filter((customer) => {
           const lowerCasedFirstName = customer[0]
             ? customer[0].toLowerCase()
@@ -545,7 +476,7 @@ export default function Customers() {
             customer[9],
             customer[2],
             // customer[3],
-            customer[4],
+            // customer[4],
             customer[7],
             customer[8].split("T")[0].replaceAll("-", "."),
             // .replace("T", " ").replace("Z", ""),
@@ -612,7 +543,7 @@ export default function Customers() {
             "Order ID",
             "E-mail",
             // "Quiz is passed",
-            "Status (Updated / New)",
+            // "Status (Updated / New)",
             "Fulfillment Status",
             "Created at",
           ]}
