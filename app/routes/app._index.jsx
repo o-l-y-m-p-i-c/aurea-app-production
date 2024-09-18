@@ -68,8 +68,15 @@ export const loader = async ({ request }) => {
                 id
                 firstName
                 email
-                metafield(namespace: "custom", key: "test_status") {
-                  value
+                metafields(first: 12) {
+                  edges {
+                    node {
+                      id
+                      namespace
+                      key
+                      value
+                    }
+                  }
                 }
               }
               email
@@ -365,7 +372,14 @@ export default function Customers() {
     // return rows;
 
     const allCustomers = array.map(
-      ({ customer, id, displayFulfillmentStatus, name, createdAt }) => {
+      ({
+        customer,
+        id,
+        displayFulfillmentStatus,
+        name,
+        createdAt,
+        metafields,
+      }) => {
         return [
           customer.firstName,
           customer.id.replace("gid://shopify/Customer/", ""),
@@ -383,6 +397,7 @@ export default function Customers() {
           displayFulfillmentStatus,
           createdAt,
           name,
+          customer.metafields.edges,
         ];
       },
     );
@@ -420,6 +435,7 @@ export default function Customers() {
     const sortedCustomers = [].concat(successCustomers).concat(newCustomers);
 
     rows = allCustomers.map((customer) => {
+      console.log(customer);
       return [
         <Link
           to={`/app/customer-plan-b/${customer[1]}/${customer[6].replace("gid://shopify/Order/", "")}`}
@@ -451,7 +467,7 @@ export default function Customers() {
           if (customer[1].toString().includes(lowerCasedIntup)) {
             return customer;
           }
-          if (customer[6].toString().includes(lowerCasedIntup)) {
+          if (customer[9].toString().includes(lowerCasedIntup)) {
             return customer;
           }
           if (lowerCasedFirstName.includes(lowerCasedIntup)) {
