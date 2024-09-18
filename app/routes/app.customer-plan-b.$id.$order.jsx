@@ -482,6 +482,12 @@ export const action = async ({ request }) => {
   const form_length = [...formData].length - 1 / 3;
   const customerID = formData.get("customerID");
   // const orderID = formData.get("orderID");
+
+  // const url = new URL(request.url);
+  // const path = url.pathname;
+  // let splited_path = path.split("/");
+  // const orderId = splited_path[splited_path.length - 1];
+
   const metafields = [];
 
   const existingMetafieldsResponse = await admin.graphql(
@@ -989,7 +995,7 @@ export default function UserPage() {
                     target="_blank"
                     href={`https://admin.shopify.com/store/e7098f-02/orders/${order2.id}`}
                   >
-                    {order2.id}
+                    {order2.name}
                   </a>
                 </div>
                 <div className="anserws-grid">
@@ -1277,13 +1283,6 @@ export default function UserPage() {
                       value={customer.id}
                       name={`customerID`}
                     />
-                    {/* <input
-                      disabled
-                      style={{ display: "none" }}
-                      type="text"
-                      value={order2.id}
-                      name={`orderID`}
-                    /> */}
                   </form>
 
                   <div className="recepies-btns">
