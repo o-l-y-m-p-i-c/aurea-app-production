@@ -434,7 +434,7 @@ export default function Customers() {
     // return rows;
 
     const allCustomers = array.map(
-      ({ customer, id, displayFulfillmentStatus, createdAt }) => {
+      ({ customer, id, displayFulfillmentStatus,name, createdAt }) => {
         return [
           customer.firstName,
           customer.id.replace("gid://shopify/Customer/", ""),
@@ -451,6 +451,7 @@ export default function Customers() {
           id,
           displayFulfillmentStatus,
           createdAt,
+          name
         ];
       },
     );
@@ -497,7 +498,8 @@ export default function Customers() {
         // <Link to={`/app/customer/${customer[1]}`}>
         customer[1],
         // </Link>,
-        customer[6].replace("gid://shopify/Order/", ""),
+        // customer[6].replace("gid://shopify/Order/", ""),
+        customer[9],
         customer[2],
         // customer[3],
         customer[4],
@@ -539,7 +541,8 @@ export default function Customers() {
             ,
             customer[1],
             // <Link to={`/app/customer/${customer[1]}`}>{customer[1]}</Link>,
-            customer[6].replace("gid://shopify/Order/", ""),
+            // customer[6].replace("gid://shopify/Order/", ""),
+            customer[9],
             customer[2],
             // customer[3],
             customer[4],
